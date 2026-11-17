@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PullUp.ng
 
-## Getting Started
+Invite-only small-group dinners in **Lagos** and **Abuja**.  
+Pull up. We pick the people. You show up.
 
-First, run the development server:
+## Stack
+
+- Next.js (App Router) + TypeScript + Tailwind CSS v4
+- Local JSON storage for applications & seat holds (`data/`)
+- Paystack wiring left as next upgrade
+
+## Run locally
 
 ```bash
+cd branch-ng
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## What’s in the app
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Route | Purpose |
+|-------|---------|
+| `/` | Brand landing |
+| `/apply` | Invite application → WhatsApp verify flow |
+| `/how` | How PullUp works |
+| `/nights` | Lagos / Abuja calendar |
+| `/nights/[id]` | Hold a seat |
+| `/fee` | Seat fee + future 3×/month pass |
+| `/safety` | Trust guardrails |
+| `/thanks` | Post-apply |
+| `/booked` | Post-hold confirmation |
 
-## Learn More
+Applications land in `data/applications.json`.  
+Bookings land in `data/bookings.json`.
 
-To learn more about Next.js, take a look at the following resources:
+## Product decisions baked in
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Solo / tiny ops · invite-only · dual city
+- Seat fee first; PullUp Pass (up to 3 nights/month) later
+- City WhatsApp groups stay separate
