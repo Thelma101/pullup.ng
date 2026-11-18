@@ -8,32 +8,31 @@ function ThanksInner() {
   const params = useSearchParams();
   const name = params.get("name") || "friend";
   const city = params.get("city") === "abuja" ? "Abuja" : "Lagos";
+  const code = params.get("code") || "";
 
   return (
     <div className="page-shell pt-[4.25rem]">
       <div className="mx-auto flex min-h-[70vh] max-w-2xl flex-col justify-center px-5 py-20 md:px-8">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-clay">
-          Application in
-        </p>
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-clay">You’re in</p>
         <h1 className="mt-4 font-display text-4xl font-bold tracking-tight md:text-5xl">
           Nice one, {name}.
         </h1>
         <p className="mt-6 max-w-md text-lg leading-relaxed text-steel">
-          We’ll WhatsApp you to verify, then send the{" "}
-          <strong className="text-void">{city}</strong> PullUp group. Introduce yourself when
-          you’re in.
+          Your <strong className="text-void">{city}</strong> account is ready. Book a hangout and
+          pay your seat — that’s how you meet people.
         </p>
-        <ol className="mt-10 space-y-3 border-l-2 border-signal pl-5 text-sm text-void-soft">
-          <li>Watch WhatsApp for a short check from us</li>
-          <li>Join your city group (Lagos ≠ Abuja)</li>
-          <li>When nights open, hold a seat from the calendar</li>
-        </ol>
+        {code && (
+          <p className="mt-6 rounded-xl border border-line bg-chalk-hot px-4 py-3 text-sm">
+            Your referral code: <strong className="font-mono text-void">{code}</strong>
+            <span className="mt-1 block text-steel">Share it — you both get ₦2,000 credit.</span>
+          </p>
+        )}
         <div className="mt-10 flex flex-col gap-3 sm:flex-row">
           <Link href="/nights" className="btn-primary text-center">
-            Peek at nights
+            Book a hangout
           </Link>
-          <Link href="/" className="btn-secondary text-center">
-            Back home
+          <Link href="/fee#pass" className="btn-secondary text-center">
+            Get a PullUp Pass
           </Link>
         </div>
       </div>

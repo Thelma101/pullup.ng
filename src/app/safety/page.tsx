@@ -5,6 +5,8 @@ export const metadata: Metadata = {
   title: "Safety",
 };
 
+const EMERGENCY_WHATSAPP = "2348000000000"; // replace with live ops number
+
 export default function SafetyPage() {
   return (
     <div className="page-shell pt-[4.25rem]">
@@ -14,34 +16,30 @@ export default function SafetyPage() {
           Strangers, with guardrails.
         </h1>
         <p className="mt-5 text-lg text-steel">
-          Meeting offline is the product. Safety is the make-or-break layer.
+          Public venues. Small tables. You can leave anytime.
         </p>
 
         <div className="mt-12 space-y-0">
           {[
             {
-              t: "Invite + verify",
-              d: "Apply, WhatsApp verify, city group. We can remove people who break the vibe.",
+              t: "Account + payment",
+              d: "Create an account with email, then book and pay. We remove people who break trust.",
             },
             {
               t: "Women-only / men-only tables",
-              d: "Ask when you apply or book. Mixed stays available.",
+              d: "Ask when you apply or book. Mixed tables stay available.",
             },
             {
-              t: "Public venues",
-              d: "Restaurants and cafés — not private homes. Area known at book; spot the morning of.",
+              t: "Public venues only",
+              d: "Restaurants, cafés, beaches, parks — not private homes. Area when you book; exact spot 24 hours before.",
             },
             {
               t: "Arrive alone, leave on your terms",
-              d: "Reconnect is mutual opt-in. We don’t dump numbers into a group chat.",
+              d: "Reconnect is mutual. We don’t dump everyone’s numbers into a chat.",
             },
             {
               t: "Report & remove",
-              d: "Email hello@pullup.ng. Harassment ends membership.",
-            },
-            {
-              t: "Still manual (on purpose)",
-              d: "Solo-scale. Phone verify + human review now. Full ID KYC is on the upgrade shelf.",
+              d: "Use the emergency button below, or email hello@pullup.ng. Harassment ends membership.",
             },
           ].map((item) => (
             <div key={item.t} className="border-t border-line py-8">
@@ -51,14 +49,31 @@ export default function SafetyPage() {
           ))}
         </div>
 
-        <p className="mt-4 rounded-2xl bg-void px-6 py-5 text-sm leading-relaxed text-white/75">
-          If you ever feel unsafe at a PullUp night, leave. Message us. Your seat fee is the least
-          important part of that story.
-        </p>
-
         <Link href="/apply" className="btn-primary mt-10 inline-flex">
-          Request an invite
+          Create account
         </Link>
+
+        <a
+          href={`https://wa.me/${EMERGENCY_WHATSAPP}?text=${encodeURIComponent("PullUp emergency — I need help now.")}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-16 flex w-full items-center justify-between gap-4 rounded-2xl bg-[#b42318] px-6 py-5 text-left text-white transition hover:bg-[#912018]"
+        >
+          <span>
+            <span className="block text-xs font-semibold uppercase tracking-[0.16em] text-white/75">
+              Emergency
+            </span>
+            <span className="mt-1 block font-display text-xl font-semibold">
+              Feel unsafe? Leave.
+            </span>
+            <span className="mt-1 block text-sm text-white/80">
+              If you need to report, then tap here. Opens WhatsApp to PullUp ops.
+            </span>
+          </span>
+          <span className="shrink-0 rounded-lg bg-white/15 px-3 py-2 text-sm font-semibold">
+            Message now
+          </span>
+        </a>
       </div>
     </div>
   );

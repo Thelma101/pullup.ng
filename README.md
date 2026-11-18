@@ -39,5 +39,5 @@ Bookings land in `data/bookings.json`.
 ## Product decisions baked in
 
 - Solo / tiny ops · invite-only · dual city
-- Seat fee first; PullUp Pass (up to 3 nights/month) later
-- City WhatsApp groups stay separate
+- Seat fee first; PullUp Pass later (₦25k / 3 hangs, ₦40k / 5 hangs)
+- WhatsApp = verify + updates, not a free networking club

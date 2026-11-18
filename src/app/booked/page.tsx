@@ -30,11 +30,11 @@ function BookedInner() {
           Ref {ref}
         </p>
         <p className="mt-8 max-w-md text-sm leading-relaxed text-steel">
-          Demo mode: Paystack isn’t wired yet — we stored your hold locally. Table details and venue
-          timing will land on WhatsApp for live nights.
+          Payment confirmed (or demo checkout if Paystack keys aren’t set yet). Food &amp; drinks
+          are on you at the venue. Exact spot lands in your email 24 hours before.
         </p>
         <Link href="/nights" className="btn-primary mt-10 inline-flex w-fit">
-          Back to nights
+          Back to hangouts
         </Link>
       </div>
     </div>

@@ -1,38 +1,65 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { FormEvent, Suspense, useEffect, useState } from "react";
 
 type Draft = {
   fullName: string;
   age: string;
-  whatsapp: string;
+  email: string;
   city: string;
   area: string;
   tablePreference: string;
   reason: string;
   dietary: string;
   howFound: string;
+  referralCode: string;
 };
 
 const empty: Draft = {
   fullName: "",
   age: "",
-  whatsapp: "",
+  email: "",
   city: "",
   area: "",
   tablePreference: "mixed",
   reason: "",
   dietary: "",
   howFound: "",
+  referralCode: "",
 };
 
-export function ApplyForm() {
+const reasonOptions = [
+  { value: "new-in-town", label: "New in town — looking for people" },
+  { value: "empty-weekends", label: "Tired of empty weekends" },
+  { value: "friends-outside-work", label: "Want friends outside work" },
+  { value: "small-groups", label: "Prefer meeting in small groups" },
+  { value: "try-something-new", label: "Trying something different" },
+  { value: "other", label: "Other" },
+];
+
+const howFoundOptions = [
+  { value: "friend", label: "Friend / referral" },
+  { value: "instagram", label: "Instagram" },
+  { value: "twitter", label: "Twitter / X" },
+  { value: "tiktok", label: "TikTok" },
+  { value: "email", label: "Email" },
+  { value: "google", label: "Google" },
+  { value: "other", label: "Other" },
+];
+
+function ApplyFormInner() {
   const router = useRouter();
+  const params = useSearchParams();
   const [step, setStep] = useState(0);
   const [draft, setDraft] = useState<Draft>(empty);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const ref = params.get("ref") || params.get("referral") || "";
+    if (ref) setDraft((d) => ({ ...d, referralCode: ref.toUpperCase() }));
+  }, [params]);
 
   function update<K extends keyof Draft>(key: K, value: Draft[K]) {
     setDraft((d) => ({ ...d, [key]: value }));
@@ -41,14 +68,14 @@ export function ApplyForm() {
   function next() {
     setError("");
     if (step === 0) {
-      if (!draft.fullName.trim() || !draft.whatsapp.trim() || Number(draft.age) < 21) {
-        setError("Name, WhatsApp, and age 21+ are required.");
+      if (!draft.fullName.trim() || !draft.email.includes("@") || Number(draft.age) < 21) {
+        setError("Name, email, and age 21+ are required.");
         return;
       }
     }
     if (step === 1) {
       if (!draft.city || !draft.area.trim()) {
-        setError("Choose a city and tell us your area.");
+        setError("Choose a city and where you live.");
         return;
       }
     }
@@ -58,8 +85,12 @@ export function ApplyForm() {
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
-    if (draft.reason.trim().length < 12) {
-      setError("Tell us a little more about why you want to join.");
+    if (!draft.reason) {
+      setError("Pick why you want to Pull Up.");
+      return;
+    }
+    if (!draft.howFound) {
+      setError("Tell us how you heard about us.");
       return;
     }
     setLoading(true);
@@ -71,12 +102,14 @@ export function ApplyForm() {
         body: JSON.stringify({
           ...draft,
           age: Number(draft.age),
+          email: draft.email.trim().toLowerCase(),
+          referralCode: draft.referralCode.trim(),
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong");
       router.push(
-        `/thanks?name=${encodeURIComponent(draft.fullName.split(" ")[0])}&city=${draft.city}`,
+        `/thanks?name=${encodeURIComponent(draft.fullName.split(" ")[0])}&city=${draft.city}&code=${encodeURIComponent(data.referralCode || "")}`,
       );
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not submit. Try again.");
@@ -94,7 +127,7 @@ export function ApplyForm() {
             key={label}
             type="button"
             onClick={() => i < step && setStep(i)}
-            className={`flex-1 rounded-lg px-2 py-2 text-center text-xs font-semibold transition ${
+            className={`flex-1 cursor-pointer rounded-lg px-2 py-2 text-center text-xs font-semibold transition ${
               i === step
                 ? "bg-void text-chalk"
                 : i < step
@@ -134,14 +167,15 @@ export function ApplyForm() {
               />
             </div>
             <div>
-              <label className="field-label" htmlFor="whatsapp">WhatsApp</label>
+              <label className="field-label" htmlFor="email">Email</label>
               <input
-                id="whatsapp"
+                id="email"
+                type="email"
                 className="field"
-                value={draft.whatsapp}
-                onChange={(e) => update("whatsapp", e.target.value)}
-                placeholder="0803… or +234…"
-                inputMode="tel"
+                value={draft.email}
+                onChange={(e) => update("email", e.target.value)}
+                placeholder="you@email.com"
+                autoComplete="email"
               />
             </div>
           </div>
@@ -151,14 +185,14 @@ export function ApplyForm() {
       {step === 1 && (
         <div className="space-y-4">
           <div>
-            <label className="field-label" htmlFor="city">City</label>
+            <label className="field-label">City</label>
             <div className="grid grid-cols-2 gap-3">
               {(["lagos", "abuja"] as const).map((c) => (
                 <button
                   key={c}
                   type="button"
                   onClick={() => update("city", c)}
-                  className={`rounded-xl border px-4 py-4 text-left font-semibold capitalize transition ${
+                  className={`cursor-pointer rounded-xl border px-4 py-4 text-left font-semibold capitalize transition ${
                     draft.city === c
                       ? "border-void bg-void text-chalk"
                       : "border-line bg-chalk-hot hover:border-void/30"
@@ -170,7 +204,7 @@ export function ApplyForm() {
             </div>
           </div>
           <div>
-            <label className="field-label" htmlFor="area">Area</label>
+            <label className="field-label" htmlFor="area">Where do you live?</label>
             <input
               id="area"
               className="field"
@@ -183,7 +217,7 @@ export function ApplyForm() {
             <label className="field-label" htmlFor="tablePreference">Who at your table?</label>
             <select
               id="tablePreference"
-              className="field"
+              className="field cursor-pointer"
               value={draft.tablePreference}
               onChange={(e) => update("tablePreference", e.target.value)}
             >
@@ -199,14 +233,22 @@ export function ApplyForm() {
         <div className="space-y-4">
           <div>
             <label className="field-label" htmlFor="reason">Why do you want to Pull Up?</label>
-            <textarea
+            <select
               id="reason"
-              rows={4}
-              className="field"
+              className="field cursor-pointer"
               value={draft.reason}
               onChange={(e) => update("reason", e.target.value)}
-              placeholder="New in town, tired of empty weekends, want people outside work…"
-            />
+              required
+            >
+              <option value="" disabled>
+                Choose one…
+              </option>
+              {reasonOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <label className="field-label" htmlFor="dietary">Dietary needs (optional)</label>
@@ -220,13 +262,33 @@ export function ApplyForm() {
           </div>
           <div>
             <label className="field-label" htmlFor="howFound">How did you hear about us?</label>
-            <input
+            <select
               id="howFound"
-              className="field"
+              className="field cursor-pointer"
               value={draft.howFound}
               onChange={(e) => update("howFound", e.target.value)}
-              placeholder="Friend, Instagram…"
+              required
+            >
+              <option value="" disabled>
+                Choose one…
+              </option>
+              {howFoundOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="field-label" htmlFor="referralCode">Referral code (optional)</label>
+            <input
+              id="referralCode"
+              className="field uppercase"
+              value={draft.referralCode}
+              onChange={(e) => update("referralCode", e.target.value.toUpperCase())}
+              placeholder="PUADA12AB"
             />
+            <p className="mt-2 text-xs text-steel">You and your friend both get ₦2,000 credit.</p>
           </div>
         </div>
       )}
@@ -239,11 +301,7 @@ export function ApplyForm() {
 
       <div className="flex gap-3">
         {step > 0 && (
-          <button
-            type="button"
-            onClick={() => setStep((s) => s - 1)}
-            className="btn-secondary flex-1"
-          >
+          <button type="button" onClick={() => setStep((s) => s - 1)} className="btn-secondary flex-1">
             Back
           </button>
         )}
@@ -252,15 +310,23 @@ export function ApplyForm() {
             Continue
           </button>
         ) : (
-          <button type="submit" disabled={loading} className="btn-primary flex-[1.4] disabled:opacity-60">
-            {loading ? "Sending…" : "Request my invite"}
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-primary flex-[1.4] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {loading ? "Sending…" : "Create my account"}
           </button>
         )}
       </div>
-
-      <p className="text-center text-xs leading-relaxed text-steel">
-        Invite-only · 21+ · After WhatsApp verify, we send your city group — Lagos or Abuja, never mixed.
-      </p>
     </form>
+  );
+}
+
+export function ApplyForm() {
+  return (
+    <Suspense fallback={<p className="text-sm text-steel">Loading form…</p>}>
+      <ApplyFormInner />
+    </Suspense>
   );
 }

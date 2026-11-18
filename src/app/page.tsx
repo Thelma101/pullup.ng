@@ -29,7 +29,7 @@ export default function HomePage() {
 
           <div className="anim-rise-3 mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
             <Link href="/apply" className="btn-primary sm:min-w-[12rem]">
-              Request an invite
+              Create account
             </Link>
             <Link href="/nights" className="btn-ghost-light sm:min-w-[10rem]">
               See nights
@@ -90,18 +90,18 @@ export default function HomePage() {
             {[
               {
                 n: "01",
-                t: "Apply",
-                d: "Short form. We read it. If it fits, we WhatsApp-verify you.",
+                t: "Create account",
+                d: "Short form with your email. You’re in.",
               },
               {
                 n: "02",
-                t: "Join your city",
-                d: "Lagos or Abuja — separate groups. Introduce yourself. Feel the vibe.",
+                t: "Book & pay",
+                d: "Pick a hangout. Pay the seat on Paystack — or use a Pass credit.",
               },
               {
                 n: "03",
-                t: "Take a seat",
-                d: "Book dinner, brunch, or drinks. Table of 4–5. Venue the morning of.",
+                t: "Show up",
+                d: "Exact venue by email 24 hours before. Food & drinks from ₦15,000 — on you at the venue.",
               },
             ].map((step) => (
               <li
@@ -132,12 +132,12 @@ export default function HomePage() {
               {
                 city: "Lagos",
                 line: "Lekki to Ikeja. Island heat, mainland pace.",
-                img: "https://images.unsplash.com/photo-1618826411640-d6df44dd3f7a?auto=format&fit=crop&w=1400&q=80",
-                alt: "Lagos city lights at dusk",
+                img: "/lagos-ikoyi.jpg",
+                alt: "Bright Lagos waterfront and Civic Centre skyline",
               },
               {
                 city: "Abuja",
-                line: "Wuse to Gwarinpa. Same format. Cleaner skyline.",
+                line: "Wuse to Gwarinpa. Capital calm.",
                 img: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=1400&q=80",
                 alt: "City boulevard at twilight",
               },
@@ -169,14 +169,14 @@ export default function HomePage() {
         <div className="mx-auto flex max-w-6xl flex-col items-start gap-8 px-5 py-24 md:flex-row md:items-end md:justify-between md:px-8 md:py-28">
           <div className="max-w-2xl">
             <h2 className="font-display text-4xl font-bold tracking-tight md:text-6xl md:leading-[1.05]">
-              Worst case: a good dinner and a story.
+              Pull up for one night.
             </h2>
             <p className="mt-5 text-lg text-white/55">
-              Best case: people you actually want to see again.
+              If the table’s good, you’ll want the next one.
             </p>
           </div>
           <Link href="/apply" className="btn-primary shrink-0">
-            Request an invite
+            Create account
           </Link>
         </div>
       </section>

@@ -5,8 +5,10 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const links = [
+  { href: "/", label: "Home" },
   { href: "/how", label: "How it works" },
-  { href: "/nights", label: "Nights" },
+  { href: "/nights", label: "Hangouts" },
+  { href: "/me", label: "My seat" },
   { href: "/fee", label: "Fee" },
   { href: "/safety", label: "Safety" },
 ];
@@ -82,7 +84,7 @@ export function SiteHeader() {
                 : "bg-void text-chalk hover:bg-void-soft"
             }`}
           >
-            Request invite
+            Join
           </Link>
         </nav>
 
@@ -112,7 +114,7 @@ export function SiteHeader() {
               </Link>
             ))}
             <Link href="/apply" className="btn-primary mt-2 w-full">
-              Request invite
+              Join
             </Link>
           </div>
         </div>

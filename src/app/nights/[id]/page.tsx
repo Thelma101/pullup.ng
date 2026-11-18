@@ -61,18 +61,21 @@ export default async function NightDetailPage({ params }: Props) {
               <dd className="font-semibold">{formatNaira(night.feeNaira)}</dd>
             </div>
             <div className="flex justify-between gap-4">
-              <dt className="text-steel">Food & drinks</dt>
-              <dd className="font-semibold">From ~{formatNaira(night.minSpendNaira)}</dd>
+              <dt className="text-steel">Food &amp; drinks</dt>
+              <dd className="max-w-[14rem] text-right font-semibold">
+                from {formatNaira(night.minSpendNaira)} · on you at the venue
+              </dd>
             </div>
             <div className="flex justify-between gap-4">
               <dt className="text-steel">Venue</dt>
-              <dd className="max-w-[14rem] text-right font-semibold">Morning of · area known now</dd>
+              <dd className="max-w-[14rem] text-right font-semibold">24 hours before · area known now</dd>
             </div>
           </dl>
 
           <p className="mt-8 text-sm leading-relaxed text-steel">
-            Table of {night.seatsTotal}. Everyone arrives alone. Full refund until three days before.
-            If the table doesn&apos;t fill, your money comes back.
+            Table of {night.seatsTotal}. Everyone arrives alone. Seat fee is paid to PullUp; food
+            &amp; drinks you settle yourself. Full refund until three days before. If the table
+            doesn&apos;t fill, your seat fee comes back.
           </p>
         </div>
 

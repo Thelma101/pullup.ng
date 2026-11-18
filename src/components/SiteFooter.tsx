@@ -15,9 +15,11 @@ export function SiteFooter() {
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-steel">Explore</p>
           <ul className="mt-4 space-y-2.5 text-sm">
+            <li><Link className="hover:text-clay" href="/">Home</Link></li>
             <li><Link className="hover:text-clay" href="/how">How it works</Link></li>
-            <li><Link className="hover:text-clay" href="/nights">Upcoming nights</Link></li>
-            <li><Link className="hover:text-clay" href="/fee">What the fee pays for</Link></li>
+            <li><Link className="hover:text-clay" href="/nights">Upcoming hangouts</Link></li>
+            <li><Link className="hover:text-clay" href="/fee">Pricing &amp; Pass</Link></li>
+            <li><Link className="hover:text-clay" href="/community">WhatsApp community</Link></li>
             <li><Link className="hover:text-clay" href="/safety">Safety</Link></li>
           </ul>
         </div>

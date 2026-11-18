@@ -20,10 +20,10 @@ export const metadata: Metadata = {
     template: "%s · PullUp.ng",
   },
   description:
-    "Invite-only small-group dinners in Lagos and Abuja. We pick the people. You show up. Not dating. Not networking. Just dinner.",
+    "Invite-only hangouts in Lagos and Abuja. Book a seat, meet new people. Not dating. Not networking.",
   openGraph: {
     title: "PullUp.ng — Stop by for dinner",
-    description: "Curated tables of strangers in Lagos and Abuja. Invite-only.",
+    description: "Curated hangouts in Lagos and Abuja. Book your seat and PullUp.",
     type: "website",
   },
 };

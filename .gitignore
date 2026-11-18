@@ -43,3 +43,8 @@ next-env.d.ts
 # local MVP submissions
 /data/applications.json
 /data/bookings.json
+/data/members.json
+/data/passes.json
+/data/waitlist.json
+/data/reconnects.json
+/data/community.json

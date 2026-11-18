@@ -19,10 +19,12 @@ export function BookingForm({ night }: { night: Night }) {
     const payload = {
       nightId: night.id,
       fullName: String(form.get("fullName") || "").trim(),
-      whatsapp: String(form.get("whatsapp") || "").trim(),
+      email: String(form.get("email") || "").trim().toLowerCase(),
       tablePreference: String(form.get("tablePreference") || "mixed"),
       dietary: String(form.get("dietary") || "").trim(),
       budgetBand: String(form.get("budgetBand") || "moderate"),
+      usePass: form.get("usePass") === "on",
+      useCredit: true,
     };
 
     try {
@@ -31,9 +33,18 @@ export function BookingForm({ night }: { night: Night }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data.error || "Booking failed");
-      router.push(`/booked?night=${encodeURIComponent(night.id)}&ref=${encodeURIComponent(data.ref)}`);
+
+      if (data.paid && data.redirectTo) {
+        router.push(data.redirectTo);
+        return;
+      }
+      if (data.authorization_url) {
+        window.location.href = data.authorization_url;
+        return;
+      }
+      throw new Error("No checkout URL returned");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not book. Try again.");
       setLoading(false);
@@ -43,14 +54,15 @@ export function BookingForm({ night }: { night: Night }) {
   return (
     <form onSubmit={onSubmit} className="space-y-5">
       <div className="rounded-2xl bg-void px-5 py-5 text-chalk">
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/45">
-          Seat fee
-        </p>
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-white/45">Seat fee</p>
         <p className="mt-1 font-display text-4xl font-bold">{formatNaira(night.feeNaira)}</p>
-        <p className="mt-3 text-sm text-white/55">
-          Food & drinks separate — about {formatNaira(night.minSpendNaira)}+ at the venue.
-          Paystack comes next; this demo holds your seat.
-        </p>
+        <div className="mt-4 space-y-2 border-t border-white/10 pt-4 text-sm text-white/70">
+          <p>
+            <span className="font-semibold text-white">Food &amp; drinks:</span>{" "}
+            from {formatNaira(night.minSpendNaira)} — on you, paid at the venue.
+          </p>
+          <p className="text-white/50">Paystack checkout next. Pass credits / referral credit apply if you have them.</p>
+        </div>
       </div>
 
       <div>
@@ -58,39 +70,47 @@ export function BookingForm({ night }: { night: Night }) {
         <input id="fullName" name="fullName" required className="field" />
       </div>
       <div>
-        <label className="field-label" htmlFor="whatsapp">WhatsApp (must match invite)</label>
-        <input id="whatsapp" name="whatsapp" required className="field" inputMode="tel" />
+        <label className="field-label" htmlFor="email">Email</label>
+        <input id="email" name="email" type="email" required className="field" autoComplete="email" />
       </div>
       <div>
         <label className="field-label" htmlFor="tablePreference">Table preference</label>
-        <select id="tablePreference" name="tablePreference" className="field" defaultValue="mixed">
+        <select id="tablePreference" name="tablePreference" className="field cursor-pointer" defaultValue="mixed">
           <option value="mixed">Mixed</option>
           <option value="women-only">Women-only</option>
           <option value="men-only">Men-only</option>
         </select>
       </div>
       <div>
-        <label className="field-label" htmlFor="budgetBand">Budget for food & drinks</label>
-        <select id="budgetBand" name="budgetBand" className="field" defaultValue="moderate">
-          <option value="moderate">Moderate</option>
+        <label className="field-label" htmlFor="budgetBand">Budget for food &amp; drinks</label>
+        <select id="budgetBand" name="budgetBand" className="field cursor-pointer" defaultValue="moderate">
+          <option value="moderate">Moderate (~{formatNaira(night.minSpendNaira)})</option>
           <option value="comfortable">Comfortable</option>
           <option value="open">Open</option>
         </select>
       </div>
       <div>
-        <label className="field-label" htmlFor="dietary">Dietary needs</label>
-        <input id="dietary" name="dietary" className="field" placeholder="Optional" />
+        <label className="field-label" htmlFor="dietary">Dietary needs (optional)</label>
+        <input id="dietary" name="dietary" className="field" placeholder="Halal, vegetarian, allergies…" />
       </div>
 
+      <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-line bg-chalk px-4 py-3 text-sm">
+        <input type="checkbox" name="usePass" className="size-4 accent-[var(--signal)]" />
+        Use 1 PullUp Pass credit if I have any
+      </label>
+
       {error && (
-        <p className="rounded-xl border border-clay/30 bg-clay/10 px-4 py-3 text-sm text-clay">
-          {error}
-        </p>
+        <p className="rounded-xl border border-clay/30 bg-clay/10 px-4 py-3 text-sm text-clay">{error}</p>
       )}
 
-      <button type="submit" disabled={loading} className="btn-primary w-full disabled:opacity-60">
-        {loading ? "Holding your seat…" : "Hold my seat"}
+      <button
+        type="submit"
+        disabled={loading}
+        className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {loading ? "Opening Paystack…" : `Pay ${formatNaira(night.feeNaira)} with Paystack`}
       </button>
+      <p className="text-center text-xs text-steel">Secured by Paystack · card, transfer, OPay</p>
     </form>
   );
 }

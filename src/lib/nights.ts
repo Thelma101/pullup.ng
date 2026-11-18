@@ -1,4 +1,4 @@
-import type { Night } from "./types";
+import type { Night, NightFormat } from "./types";
 
 export const nights: Night[] = [
   {
@@ -11,7 +11,7 @@ export const nights: Night[] = [
     seatsTotal: 5,
     seatsTaken: 2,
     feeNaira: 10000,
-    minSpendNaira: 25000,
+    minSpendNaira: 15000,
     status: "open",
   },
   {
@@ -24,62 +24,97 @@ export const nights: Night[] = [
     seatsTotal: 5,
     seatsTaken: 1,
     feeNaira: 10000,
-    minSpendNaira: 22000,
-    status: "open",
-  },
-  {
-    id: "lagos-brunch-nov-29",
-    city: "lagos",
-    area: "Ikeja",
-    format: "brunch",
-    date: "2026-11-29",
-    time: "13:00",
-    seatsTotal: 5,
-    seatsTaken: 4,
-    feeNaira: 8000,
-    minSpendNaira: 18000,
-    status: "filling",
-  },
-  {
-    id: "abuja-drinks-nov-29",
-    city: "abuja",
-    area: "Jabi",
-    format: "drinks",
-    date: "2026-11-29",
-    time: "18:30",
-    seatsTotal: 5,
-    seatsTaken: 0,
-    feeNaira: 7000,
     minSpendNaira: 15000,
     status: "open",
   },
   {
-    id: "lagos-dinner-dec-06",
+    id: "lagos-drinks-nov-28",
     city: "lagos",
-    area: "Yaba–Surulere",
-    format: "dinner",
-    date: "2026-12-06",
+    area: "Ikeja",
+    format: "drinks",
+    date: "2026-11-28",
     time: "19:00",
     seatsTotal: 5,
-    seatsTaken: 0,
-    feeNaira: 10000,
-    minSpendNaira: 22000,
+    seatsTaken: 1,
+    feeNaira: 8000,
+    minSpendNaira: 15000,
     status: "open",
   },
   {
-    id: "abuja-brunch-dec-07",
+    id: "lagos-beach-nov-29",
+    city: "lagos",
+    area: "Lekki–Ajah",
+    format: "beach",
+    date: "2026-11-29",
+    time: "14:00",
+    seatsTotal: 6,
+    seatsTaken: 6,
+    feeNaira: 8000,
+    minSpendNaira: 15000,
+    status: "full",
+  },
+  {
+    id: "abuja-games-nov-29",
     city: "abuja",
-    area: "Gwarinpa",
+    area: "Jabi",
+    format: "games",
+    date: "2026-11-29",
+    time: "16:00",
+    seatsTotal: 6,
+    seatsTaken: 0,
+    feeNaira: 8000,
+    minSpendNaira: 15000,
+    status: "open",
+  },
+  {
+    id: "lagos-picnic-dec-05",
+    city: "lagos",
+    area: "VI–Ikoyi",
+    format: "picnic",
+    date: "2026-12-05",
+    time: "15:00",
+    seatsTotal: 6,
+    seatsTaken: 5,
+    feeNaira: 8000,
+    minSpendNaira: 15000,
+    status: "flash",
+  },
+  {
+    id: "abuja-brunch-dec-06",
+    city: "abuja",
+    area: "Central Area",
     format: "brunch",
-    date: "2026-12-07",
-    time: "13:00",
+    date: "2026-12-06",
+    time: "12:30",
     seatsTotal: 5,
     seatsTaken: 0,
     feeNaira: 8000,
-    minSpendNaira: 18000,
+    minSpendNaira: 15000,
+    status: "open",
+  },
+  {
+    id: "lagos-games-dec-07",
+    city: "lagos",
+    area: "Yaba–Surulere",
+    format: "games",
+    date: "2026-12-07",
+    time: "15:00",
+    seatsTotal: 6,
+    seatsTaken: 0,
+    feeNaira: 8000,
+    minSpendNaira: 15000,
     status: "open",
   },
 ];
+
+const formatLabels: Record<NightFormat, string> = {
+  dinner: "Dinner",
+  drinks: "Drinks",
+  beach: "Beach",
+  picnic: "Picnic",
+  games: "Game night",
+  brunch: "Brunch",
+};
 
 export function getNight(id: string) {
   return nights.find((n) => n.id === id);
@@ -106,9 +141,7 @@ export function cityLabel(city: string) {
 }
 
 export function formatLabel(format: string) {
-  if (format === "dinner") return "Dinner";
-  if (format === "brunch") return "Brunch";
-  return "Drinks";
+  return formatLabels[format as NightFormat] || format;
 }
 
 export function seatsLeft(night: Night) {
