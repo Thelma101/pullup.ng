@@ -16,7 +16,7 @@ export default function CommunityPage() {
             Join the PullUp community.
           </h1>
           <p className="mt-5 max-w-md text-lg text-steel">
-            Hangout drops, flash seats, and city vibes. Open to everyone — Lagos, Abuja, or visiting.
+            Hangout drops, flash seats, and area vibes. Tell us a bit about yourself and we’ll add you.
           </p>
           <p className="mt-6 text-sm text-steel">
             Want a seat at a table?{" "}

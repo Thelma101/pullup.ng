@@ -87,7 +87,7 @@ export interface WaitlistEntry {
   status: "waiting" | "offered" | "booked" | "expired";
 }
 
-export interface ReconnectOptIn {
+export interface ReconnectRequest {
   id: string;
   createdAt: string;
   bookingRef: string;
@@ -95,8 +95,15 @@ export interface ReconnectOptIn {
   fromEmail: string;
   fromName: string;
   targetLabel: string;
+  targetEmail?: string;
   note?: string;
+  status: "pending" | "approved" | "declined" | "connected";
+  token: string;
+  respondedAt?: string;
 }
+
+/** @deprecated use ReconnectRequest */
+export type ReconnectOptIn = ReconnectRequest;
 
 export interface ApplicationPayload {
   fullName: string;

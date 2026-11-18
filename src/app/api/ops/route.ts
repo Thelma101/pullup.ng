@@ -18,8 +18,14 @@ async function listCommunity() {
     return JSON.parse(raw) as Array<{
       id: string;
       fullName: string;
+      firstName?: string;
+      lastName?: string;
+      age?: number;
+      state?: string;
+      area?: string;
+      aboutYou?: string;
       whatsapp: string;
-      city: string;
+      city?: string;
       email?: string;
       createdAt: string;
     }>;

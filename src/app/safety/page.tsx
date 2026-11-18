@@ -35,7 +35,7 @@ export default function SafetyPage() {
             },
             {
               t: "Arrive alone, leave on your terms",
-              d: "Reconnect is mutual. We don’t dump everyone’s numbers into a chat.",
+              d: "Want to reconnect later? Ask via Pull Up again — they confirm before we share emails.",
             },
             {
               t: "Report & remove",

@@ -7,6 +7,7 @@ export function AgainForm() {
   const params = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [validateUrl, setValidateUrl] = useState("");
   const [error, setError] = useState("");
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -14,6 +15,7 @@ export function AgainForm() {
     setLoading(true);
     setError("");
     setMessage("");
+    setValidateUrl("");
     const form = new FormData(e.currentTarget);
     try {
       const res = await fetch("/api/reconnect", {
@@ -30,6 +32,7 @@ export function AgainForm() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed");
       setMessage(data.message);
+      if (data.validateUrl) setValidateUrl(data.validateUrl);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not save");
     } finally {
@@ -81,8 +84,16 @@ export function AgainForm() {
       </div>
       {error && <p className="text-sm text-clay">{error}</p>}
       {message && <p className="rounded-xl bg-signal/15 px-4 py-3 text-sm text-void">{message}</p>}
+      {validateUrl && (
+        <p className="rounded-xl border border-line bg-chalk px-4 py-3 text-xs text-steel">
+          Dev validate link:{" "}
+          <a className="break-all font-medium text-clay underline" href={validateUrl}>
+            {validateUrl}
+          </a>
+        </p>
+      )}
       <button type="submit" disabled={loading} className="btn-primary w-full disabled:opacity-60">
-        {loading ? "Saving…" : "Send opt-in"}
+        {loading ? "Sending…" : "Ask them to reconnect"}
       </button>
     </form>
   );

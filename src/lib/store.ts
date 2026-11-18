@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
-import type { Booking, Member, PassPurchase, ReconnectOptIn, WaitlistEntry } from "./types";
+import type { Booking, Member, PassPurchase, ReconnectRequest, WaitlistEntry } from "./types";
 
 const dataDir = path.join(process.cwd(), "data");
 
@@ -114,34 +114,35 @@ export async function saveWaitlistEntry(entry: WaitlistEntry) {
 }
 
 export async function listReconnects() {
-  return readJson<ReconnectOptIn[]>("reconnects.json", []);
+  return readJson<ReconnectRequest[]>("reconnects.json", []);
 }
 
-export async function saveReconnect(entry: ReconnectOptIn) {
+export async function saveReconnect(entry: ReconnectRequest) {
   const list = await listReconnects();
-  list.push(entry);
+  const idx = list.findIndex((r) => r.id === entry.id || r.token === entry.token);
+  if (idx >= 0) list[idx] = entry;
+  else list.push(entry);
   await writeJson("reconnects.json", list);
   return entry;
 }
 
-export async function findMutualReconnects(nightId: string) {
+export async function findReconnectByToken(token: string) {
   const list = await listReconnects();
-  const forNight = list.filter((r) => r.nightId === nightId);
-  const mutual: Array<{ a: string; b: string; labels: string[] }> = [];
-  for (const left of forNight) {
-    for (const right of forNight) {
-      if (left.fromEmail >= right.fromEmail) continue;
-      if (
-        left.targetLabel.toLowerCase() === right.fromName.toLowerCase() ||
-        right.targetLabel.toLowerCase() === left.fromName.toLowerCase()
-      ) {
-        mutual.push({
-          a: left.fromEmail,
-          b: right.fromEmail,
-          labels: [left.fromName, right.fromName],
-        });
-      }
-    }
-  }
-  return mutual;
+  return list.find((r) => r.token === token) || null;
+}
+
+export async function findTablemates(nightId: string, excludeEmail: string) {
+  const bookings = await listBookings();
+  return bookings
+    .filter(
+      (b) =>
+        b.nightId === nightId &&
+        b.paymentStatus === "paid" &&
+        b.email.toLowerCase() !== excludeEmail.toLowerCase(),
+    )
+    .map((b) => ({
+      fullName: b.fullName,
+      email: b.email,
+      firstName: b.fullName.trim().split(/\s+/)[0] || b.fullName,
+    }));
 }

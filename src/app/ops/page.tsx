@@ -15,8 +15,14 @@ type OpsPayload = {
   community: Array<{
     id: string;
     fullName: string;
+    firstName?: string;
+    lastName?: string;
+    age?: number;
+    state?: string;
+    area?: string;
+    aboutYou?: string;
     whatsapp: string;
-    city: string;
+    city?: string;
     email?: string;
     createdAt: string;
   }>;
@@ -189,9 +195,13 @@ export default function OpsPage() {
                   <div key={c.id} className="py-4">
                     <p className="font-semibold">{c.fullName}</p>
                     <p className="text-sm text-steel">
-                      {c.whatsapp} · {c.city}
+                      {c.whatsapp}
+                      {c.age != null ? ` · ${c.age}` : ""}
+                      {c.state ? ` · ${c.state}` : ""}
+                      {c.area || c.city ? ` · ${c.area || c.city}` : ""}
                       {c.email ? ` · ${c.email}` : ""}
                     </p>
+                    {c.aboutYou && <p className="mt-1 text-sm text-void/80">{c.aboutYou}</p>}
                   </div>
                 ))}
                 {(data.community || []).length === 0 && (

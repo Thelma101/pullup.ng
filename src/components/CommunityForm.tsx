@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { NIGERIA_STATES } from "@/lib/nigeria-states";
 
 export function CommunityForm() {
   const [loading, setLoading] = useState(false);
@@ -18,9 +19,13 @@ export function CommunityForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          fullName: String(form.get("fullName") || "").trim(),
+          firstName: String(form.get("firstName") || "").trim(),
+          lastName: String(form.get("lastName") || "").trim(),
+          age: String(form.get("age") || "").trim(),
+          state: String(form.get("state") || "").trim(),
+          area: String(form.get("area") || "").trim(),
+          aboutYou: String(form.get("aboutYou") || "").trim(),
           whatsapp: String(form.get("whatsapp") || "").trim(),
-          city: String(form.get("city") || "").trim(),
           email: String(form.get("email") || "").trim(),
           source: "community-page",
         }),
@@ -45,12 +50,78 @@ export function CommunityForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
-      <div>
-        <label className="field-label" htmlFor="fullName">Full name</label>
-        <input id="fullName" name="fullName" required className="field" placeholder="Ada Okafor" />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label className="field-label" htmlFor="firstName">
+            First name
+          </label>
+          <input id="firstName" name="firstName" required className="field" placeholder="Ada" />
+        </div>
+        <div>
+          <label className="field-label" htmlFor="lastName">
+            Last name
+          </label>
+          <input id="lastName" name="lastName" required className="field" placeholder="Okafor" />
+        </div>
       </div>
       <div>
-        <label className="field-label" htmlFor="whatsapp">WhatsApp number</label>
+        <label className="field-label" htmlFor="age">
+          Age
+        </label>
+        <input
+          id="age"
+          name="age"
+          required
+          className="field"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          placeholder="28"
+        />
+      </div>
+      <div>
+        <label className="field-label" htmlFor="state">
+          State
+        </label>
+        <select id="state" name="state" required className="field cursor-pointer" defaultValue="">
+          <option value="" disabled>
+            Choose state…
+          </option>
+          {NIGERIA_STATES.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label className="field-label" htmlFor="area">
+          Where you live
+        </label>
+        <input
+          id="area"
+          name="area"
+          required
+          className="field"
+          placeholder="e.g. Ikeja, Lekki, Ajah"
+        />
+      </div>
+      <div>
+        <label className="field-label" htmlFor="aboutYou">
+          3 things we should know about you
+        </label>
+        <textarea
+          id="aboutYou"
+          name="aboutYou"
+          required
+          rows={4}
+          className="field resize-y"
+          placeholder="What you do, what you like, anything that helps us get you…"
+        />
+      </div>
+      <div>
+        <label className="field-label" htmlFor="whatsapp">
+          WhatsApp number
+        </label>
         <input
           id="whatsapp"
           name="whatsapp"
@@ -61,18 +132,9 @@ export function CommunityForm() {
         />
       </div>
       <div>
-        <label className="field-label" htmlFor="city">City</label>
-        <select id="city" name="city" required className="field cursor-pointer" defaultValue="">
-          <option value="" disabled>
-            Choose one…
-          </option>
-          <option value="lagos">Lagos</option>
-          <option value="abuja">Abuja</option>
-          <option value="other">Other / visiting</option>
-        </select>
-      </div>
-      <div>
-        <label className="field-label" htmlFor="email">Email (optional)</label>
+        <label className="field-label" htmlFor="email">
+          Email (optional)
+        </label>
         <input id="email" name="email" type="email" className="field" placeholder="you@email.com" />
       </div>
       {error && (
