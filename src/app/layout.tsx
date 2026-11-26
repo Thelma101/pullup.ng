@@ -25,6 +25,11 @@ export const metadata: Metadata = {
     title: "PullUp — Stop by for dinner",
     description: "Curated hangouts in Lagos and Abuja. Book your seat and PullUp.",
     type: "website",
+    images: [{ url: "/brand/pullup-mark.jpg", width: 512, height: 512, alt: "PullUp" }],
+  },
+  icons: {
+    icon: [{ url: "/brand/pullup-mark.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/brand/pullup-mark.jpg" }],
   },
 };
 

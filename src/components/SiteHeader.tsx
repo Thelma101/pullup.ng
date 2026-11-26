@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { PullUpLogo } from "@/components/PullUpLogo";
 
 const links = [
   { href: "/", label: "Home" },
@@ -40,21 +41,11 @@ export function SiteHeader() {
       }`}
     >
       <div className="mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between px-5 md:px-8">
-        <Link
-          href="/"
-          className={`font-display font-bold tracking-tight ${
-            inverted ? "text-white" : "text-void"
-          }`}
-          aria-label="PullUp home"
-        >
+        <Link href="/" aria-label="PullUp home" className="shrink-0">
           {inverted ? (
-            <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/25 text-sm">
-              P<span className="text-signal">.</span>
-            </span>
+            <PullUpLogo variant="mark" inverted />
           ) : (
-            <span className="text-[1.35rem]">
-              PullUp<span className="text-clay">.</span>
-            </span>
+            <PullUpLogo variant="full" />
           )}
         </Link>
 

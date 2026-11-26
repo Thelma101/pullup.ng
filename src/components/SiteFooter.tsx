@@ -1,13 +1,12 @@
 import Link from "next/link";
+import { PullUpLogo } from "@/components/PullUpLogo";
 
 export function SiteFooter() {
   return (
     <footer className="border-t border-line bg-chalk">
       <div className="mx-auto grid max-w-6xl gap-12 px-5 py-14 md:grid-cols-[1.5fr_1fr_1fr] md:px-8">
         <div>
-          <p className="font-display text-2xl font-bold tracking-tight">
-            PullUp<span className="text-clay">.</span>
-          </p>
+          <PullUpLogo />
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-steel">
             Pull up for dinner in Lagos or Abuja. Invite-only tables, built on purpose.
           </p>
