@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { makeReferralCode, REFERRAL_CREDIT_NAIRA } from "@/lib/pricing";
 import { findMemberByEmail, findMemberByReferralCode, saveMember } from "@/lib/store";
+import { sendEmail } from "@/lib/email/send";
+import { welcomeEmail } from "@/lib/email/templates";
 import type { Member } from "@/lib/types";
 
 const REASONS = new Set([
@@ -87,6 +89,17 @@ export async function POST(request: Request) {
     };
 
     await saveMember(entry);
+
+    try {
+      const firstName = fullName.trim().split(/\s+/)[0] || fullName;
+      await sendEmail({
+        to: email,
+        payload: welcomeEmail({ firstName, referralCode: entry.referralCode }),
+      });
+    } catch (mailErr) {
+      console.error("[apply] email", mailErr);
+    }
+
     return NextResponse.json({
       ok: true,
       id: entry.id,

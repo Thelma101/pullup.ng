@@ -1,18 +1,27 @@
 {
-  "name": "pullup-ng",
+  "name": "gopullup",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=18.18.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "start": "node server.js",
+    "start:next": "next start",
+    "lint": "eslint",
+    "email:previews": "node scripts/write-email-previews.mjs",
+    "email:send-previews": "node scripts/send-email-previews.mjs",
+    "pack:cpanel": "node scripts/pack-cpanel.mjs"
   },
   "dependencies": {
     "framer-motion": "^14.14.0",
+    "mongoose": "^9.12.2",
     "next": "16.4.6",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "resend": "^6.39.0"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "4.3.3",

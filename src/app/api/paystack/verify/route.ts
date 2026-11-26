@@ -8,7 +8,10 @@ import {
   saveMember,
   savePass,
 } from "@/lib/store";
-import { makeReferralCode } from "@/lib/pricing";
+import { makeReferralCode, PASS_PLANS } from "@/lib/pricing";
+import { formatNaira, formatNightLabel, getNight } from "@/lib/nights";
+import { sendEmail } from "@/lib/email/send";
+import { bookingConfirmedEmail, passConfirmedEmail } from "@/lib/email/templates";
 import type { Member } from "@/lib/types";
 
 export async function GET(request: Request) {
@@ -61,6 +64,23 @@ export async function GET(request: Request) {
         };
         await saveMember(member);
       }
+
+      try {
+        const plan = PASS_PLANS[pass.plan];
+        const firstName = pass.fullName.trim().split(/\s+/)[0] || pass.fullName;
+        await sendEmail({
+          to: pass.email,
+          payload: passConfirmedEmail({
+            firstName,
+            planLabel: plan.label,
+            credits: pass.credits,
+            amountLabel: formatNaira(pass.amountNaira),
+          }),
+        });
+      } catch (mailErr) {
+        console.error("[paystack/verify] pass email", mailErr);
+      }
+
       return NextResponse.redirect(`${origin}/fee?pay=success&ref=${encodeURIComponent(ref)}#pass`);
     }
 
@@ -79,11 +99,31 @@ export async function GET(request: Request) {
       });
     }
 
+    const amountPaid = verified.demo
+      ? booking.feeNaira - booking.creditAppliedNaira
+      : verified.amountNaira;
+
     await saveBooking({
       ...booking,
       paymentStatus: "paid",
-      amountPaidNaira: verified.demo ? booking.feeNaira - booking.creditAppliedNaira : verified.amountNaira,
+      amountPaidNaira: amountPaid,
     });
+
+    try {
+      const night = getNight(booking.nightId);
+      const firstName = booking.fullName.trim().split(/\s+/)[0] || booking.fullName;
+      await sendEmail({
+        to: booking.email,
+        payload: bookingConfirmedEmail({
+          firstName,
+          ref: booking.ref,
+          nightLabel: night ? formatNightLabel(night) : booking.nightId,
+          feeLabel: formatNaira(amountPaid || booking.feeNaira),
+        }),
+      });
+    } catch (mailErr) {
+      console.error("[paystack/verify] booking email", mailErr);
+    }
 
     return NextResponse.redirect(
       `${origin}/booked?night=${encodeURIComponent(booking.nightId)}&ref=${encodeURIComponent(booking.ref)}`,

@@ -1,41 +1,8 @@
 import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
 import { isNigeriaState } from "@/lib/nigeria-states";
-
-type CommunityLead = {
-  id: string;
-  createdAt: string;
-  firstName: string;
-  lastName: string;
-  fullName: string;
-  age: number;
-  state: string;
-  area: string;
-  aboutYou: string;
-  whatsapp: string;
-  email?: string;
-  source?: string;
-  /** @deprecated kept for older leads */
-  city?: string;
-};
-
-const file = path.join(process.cwd(), "data", "community.json");
-
-async function readLeads(): Promise<CommunityLead[]> {
-  try {
-    const raw = await fs.readFile(file, "utf8");
-    if (!raw.trim()) return [];
-    return JSON.parse(raw) as CommunityLead[];
-  } catch {
-    return [];
-  }
-}
-
-async function writeLeads(list: CommunityLead[]) {
-  await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.writeFile(file, JSON.stringify(list, null, 2), "utf8");
-}
+import { listCommunity, saveCommunityLead } from "@/lib/store";
+import { sendEmail } from "@/lib/email/send";
+import { communityWelcomeEmail } from "@/lib/email/templates";
 
 export async function POST(request: Request) {
   try {
@@ -68,7 +35,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Share 3 things we should know about you." }, { status: 400 });
     }
 
-    const entry: CommunityLead = {
+    const entry = await saveCommunityLead({
       id: `com_${Date.now()}`,
       createdAt: new Date().toISOString(),
       firstName,
@@ -81,11 +48,18 @@ export async function POST(request: Request) {
       whatsapp,
       email: email || undefined,
       source,
-    };
+    });
 
-    const list = await readLeads();
-    list.push(entry);
-    await writeLeads(list);
+    if (email) {
+      try {
+        await sendEmail({
+          to: email,
+          payload: communityWelcomeEmail({ firstName }),
+        });
+      } catch (mailErr) {
+        console.error("[community] email", mailErr);
+      }
+    }
 
     return NextResponse.json({ ok: true, id: entry.id });
   } catch (err) {
@@ -101,6 +75,6 @@ export async function GET(request: Request) {
   if (provided !== key) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const leads = await readLeads();
+  const leads = await listCommunity();
   return NextResponse.json({ leads });
 }

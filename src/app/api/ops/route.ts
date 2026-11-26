@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
-import { listBookings, listMembers, listPasses, saveBooking } from "@/lib/store";
+import { listBookings, listCommunity, listMembers, listPasses, saveBooking } from "@/lib/store";
 
 function authorized(request: Request) {
   const key = process.env.OPS_DASHBOARD_SECRET || "pullup-ops";
@@ -9,29 +7,6 @@ function authorized(request: Request) {
   const url = new URL(request.url);
   const query = url.searchParams.get("key") || "";
   return header === key || query === key;
-}
-
-async function listCommunity() {
-  try {
-    const raw = await fs.readFile(path.join(process.cwd(), "data", "community.json"), "utf8");
-    if (!raw.trim()) return [];
-    return JSON.parse(raw) as Array<{
-      id: string;
-      fullName: string;
-      firstName?: string;
-      lastName?: string;
-      age?: number;
-      state?: string;
-      area?: string;
-      aboutYou?: string;
-      whatsapp: string;
-      city?: string;
-      email?: string;
-      createdAt: string;
-    }>;
-  } catch {
-    return [];
-  }
 }
 
 export async function GET(request: Request) {

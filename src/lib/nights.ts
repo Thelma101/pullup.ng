@@ -147,3 +147,7 @@ export function formatLabel(format: string) {
 export function seatsLeft(night: Night) {
   return Math.max(night.seatsTotal - night.seatsTaken, 0);
 }
+
+export function formatNightLabel(night: Night) {
+  return `${formatLabel(night.format)} · ${night.area} · ${formatNightDate(night.date)}`;
+}

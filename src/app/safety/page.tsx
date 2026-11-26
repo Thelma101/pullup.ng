@@ -39,7 +39,7 @@ export default function SafetyPage() {
             },
             {
               t: "Report & remove",
-              d: "Use the emergency button below, or email hello@pullup.ng. Harassment ends membership.",
+              d: "Use the emergency button below, or email hello@gopullup.ng. Harassment ends membership.",
             },
           ].map((item) => (
             <div key={item.t} className="border-t border-line py-8">

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { findReconnectByToken, saveReconnect } from "@/lib/store";
+import { sendEmail } from "@/lib/email/send";
+import { reconnectIntroEmail } from "@/lib/email/templates";
 
 export async function POST(request: Request) {
   try {
@@ -7,6 +9,7 @@ export async function POST(request: Request) {
     const token = String(body.token || "").trim();
     const decision = String(body.decision || "").trim(); // approve | decline
     const targetEmail = String(body.targetEmail || "").trim().toLowerCase();
+    const targetName = String(body.targetName || "").trim();
 
     const entry = await findReconnectByToken(token);
     if (!entry) {
@@ -54,11 +57,31 @@ export async function POST(request: Request) {
       respondedAt: new Date().toISOString(),
     });
 
-    console.info("[reconnect] connected", {
-      from: entry.fromEmail,
-      to: email,
-      nightId: entry.nightId,
-    });
+    const fromFirst = entry.fromName.trim().split(/\s+/)[0] || entry.fromName;
+    const toDisplay = targetName || entry.targetLabel || email.split("@")[0];
+
+    try {
+      await Promise.all([
+        sendEmail({
+          to: entry.fromEmail,
+          payload: reconnectIntroEmail({
+            toName: fromFirst,
+            otherName: toDisplay,
+            otherEmail: email,
+          }),
+        }),
+        sendEmail({
+          to: email,
+          payload: reconnectIntroEmail({
+            toName: toDisplay.split(/\s+/)[0] || toDisplay,
+            otherName: entry.fromName,
+            otherEmail: entry.fromEmail,
+          }),
+        }),
+      ]);
+    } catch (mailErr) {
+      console.error("[reconnect/validate] email", mailErr);
+    }
 
     return NextResponse.json({
       ok: true,

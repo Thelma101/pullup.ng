@@ -1,0 +1,9 @@
+*.md
+DEPLOY-CPANEL.md
+dist-cpanel
+email-previews
+data
+scripts/pack-cpanel.mjs
+scripts/write-email-previews.mjs
+scripts/send-email-previews.mjs
+.env.production.example

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
-import { getNight, seatsLeft } from "@/lib/nights";
+import { formatNightLabel, getNight, seatsLeft } from "@/lib/nights";
 import { saveWaitlistEntry } from "@/lib/store";
+import { sendEmail } from "@/lib/email/send";
+import { waitlistJoinedEmail } from "@/lib/email/templates";
 import type { WaitlistEntry } from "@/lib/types";
 
 export async function POST(request: Request) {
@@ -28,6 +30,20 @@ export async function POST(request: Request) {
       status: "waiting",
     };
     await saveWaitlistEntry(entry);
+
+    try {
+      const firstName = fullName.trim().split(/\s+/)[0] || fullName;
+      await sendEmail({
+        to: email,
+        payload: waitlistJoinedEmail({
+          firstName,
+          nightLabel: formatNightLabel(night),
+        }),
+      });
+    } catch (mailErr) {
+      console.error("[waitlist] email", mailErr);
+    }
+
     return NextResponse.json({ ok: true, id: entry.id });
   } catch (err) {
     console.error("[waitlist]", err);

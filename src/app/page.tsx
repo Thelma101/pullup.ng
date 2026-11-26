@@ -19,7 +19,7 @@ export default function HomePage() {
         <div className="relative mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-end px-5 pb-14 pt-28 md:justify-end md:px-8 md:pb-20">
           <p className="anim-rise font-display text-[clamp(4.2rem,13vw,8.75rem)] font-extrabold leading-[0.86] tracking-[-0.045em]">
             PullUp
-            <span className="text-signal">.ng</span>
+            <span className="text-signal">.</span>
           </p>
 
           <p className="anim-rise-2 mt-5 max-w-md text-[1.05rem] leading-relaxed text-white/82 md:text-xl">

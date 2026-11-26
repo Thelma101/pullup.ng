@@ -18,15 +18,15 @@ export function ValidateAgainForm() {
     setMessage("");
 
     const form = e?.currentTarget;
-    const targetEmail = form
-      ? String(new FormData(form).get("targetEmail") || "").trim().toLowerCase()
-      : "";
+    const fd = form ? new FormData(form) : null;
+    const targetEmail = fd ? String(fd.get("targetEmail") || "").trim().toLowerCase() : "";
+    const targetName = fd ? String(fd.get("targetName") || "").trim() : "";
 
     try {
       const res = await fetch("/api/reconnect/validate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, decision, targetEmail }),
+        body: JSON.stringify({ token, decision, targetEmail, targetName }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed");
@@ -57,6 +57,10 @@ export function ValidateAgainForm() {
         Someone from your PullUp table wants to reconnect. Confirm below and we’ll introduce you by
         email — only if you say yes.
       </p>
+      <div>
+        <label className="field-label" htmlFor="targetName">Your name</label>
+        <input id="targetName" name="targetName" required className="field" placeholder="Ada" />
+      </div>
       <div>
         <label className="field-label" htmlFor="targetEmail">Your email</label>
         <input

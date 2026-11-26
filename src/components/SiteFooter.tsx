@@ -6,7 +6,7 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-6xl gap-12 px-5 py-14 md:grid-cols-[1.5fr_1fr_1fr] md:px-8">
         <div>
           <p className="font-display text-2xl font-bold tracking-tight">
-            PullUp<span className="text-clay">.ng</span>
+            PullUp<span className="text-clay">.</span>
           </p>
           <p className="mt-3 max-w-sm text-sm leading-relaxed text-steel">
             Pull up for dinner in Lagos or Abuja. Invite-only tables, built on purpose.
@@ -27,8 +27,8 @@ export function SiteFooter() {
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-steel">Contact</p>
           <ul className="mt-4 space-y-2.5 text-sm text-void-soft">
             <li>
-              <a className="hover:text-clay" href="mailto:hello@pullup.ng">
-                hello@pullup.ng
+              <a className="hover:text-clay" href="mailto:hello@gopullup.ng">
+                hello@gopullup.ng
               </a>
             </li>
             <li>Lagos · Abuja</li>
@@ -38,7 +38,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-5 text-xs text-steel md:flex-row md:justify-between md:px-8">
-          <p>© 2026 PullUp.ng</p>
+          <p>© 2026 PullUp · gopullup.ng</p>
           <p>Not dating. Not networking. Just dinner.</p>
         </div>
       </div>

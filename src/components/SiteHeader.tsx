@@ -45,7 +45,7 @@ export function SiteHeader() {
           className={`font-display font-bold tracking-tight ${
             inverted ? "text-white" : "text-void"
           }`}
-          aria-label="PullUp.ng home"
+          aria-label="PullUp home"
         >
           {inverted ? (
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/25 text-sm">
@@ -53,7 +53,7 @@ export function SiteHeader() {
             </span>
           ) : (
             <span className="text-[1.35rem]">
-              PullUp<span className="text-clay">.ng</span>
+              PullUp<span className="text-clay">.</span>
             </span>
           )}
         </Link>

@@ -16,13 +16,13 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: {
-    default: "PullUp.ng — Stop by for dinner",
-    template: "%s · PullUp.ng",
+    default: "PullUp — Stop by for dinner",
+    template: "%s · PullUp",
   },
   description:
     "Invite-only hangouts in Lagos and Abuja. Book a seat, meet new people. Not dating. Not networking.",
   openGraph: {
-    title: "PullUp.ng — Stop by for dinner",
+    title: "PullUp — Stop by for dinner",
     description: "Curated hangouts in Lagos and Abuja. Book your seat and PullUp.",
     type: "website",
   },

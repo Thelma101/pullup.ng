@@ -3,7 +3,7 @@ import { ApplyForm } from "@/components/ApplyForm";
 
 export const metadata: Metadata = {
   title: "Create account",
-  description: "Join PullUp.ng — invite-only hangouts in Lagos and Abuja.",
+  description: "Join PullUp — invite-only hangouts in Lagos and Abuja.",
 };
 
 export default function ApplyPage() {

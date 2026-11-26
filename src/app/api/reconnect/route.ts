@@ -5,6 +5,8 @@ import {
   findTablemates,
   saveReconnect,
 } from "@/lib/store";
+import { sendEmail } from "@/lib/email/send";
+import { reconnectAskEmail } from "@/lib/email/templates";
 import type { ReconnectRequest } from "@/lib/types";
 
 function siteUrl(request: Request) {
@@ -55,12 +57,28 @@ export async function POST(request: Request) {
     await saveReconnect(entry);
 
     const validateUrl = `${siteUrl(request)}/again/validate?token=${encodeURIComponent(token)}`;
-    // Email send lands here later — for now ops + logs carry the validate link.
-    console.info("[reconnect] validate link", {
-      to: entry.targetEmail || `(unmatched: ${targetLabel})`,
-      from: fromName,
-      validateUrl,
-    });
+
+    if (entry.targetEmail) {
+      try {
+        await sendEmail({
+          to: entry.targetEmail,
+          payload: reconnectAskEmail({
+            targetFirstName: match?.firstName || targetLabel,
+            fromName,
+            validateUrl,
+            noteText: note || undefined,
+          }),
+        });
+      } catch (mailErr) {
+        console.error("[reconnect] email", mailErr);
+      }
+    } else {
+      console.info("[reconnect] unmatched target — ops follow-up", {
+        targetLabel,
+        from: fromName,
+        validateUrl,
+      });
+    }
 
     return NextResponse.json({
       ok: true,
@@ -69,7 +87,6 @@ export async function POST(request: Request) {
       message: match
         ? `Got it. We’ll message ${match.firstName} to confirm. If they say yes, we connect you both by email.`
         : `Got it. We’ll reach out to “${targetLabel}” from that table to confirm. If they say yes, we connect you by email.`,
-      // Only expose validate URL in development so local testing is easy
       validateUrl: process.env.NODE_ENV === "development" ? validateUrl : undefined,
     });
   } catch (err) {
