@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { formatLabel, formatNaira, formatNightDate } from "@/lib/nights";
+import { MemberPreferences } from "./MemberPreferences";
 
 type MePayload = {
   member: {
@@ -12,6 +13,8 @@ type MePayload = {
     passCredits: number;
     referralCode: string;
     city: string;
+    tablePreference: string;
+    dietary?: string;
   } | null;
   upcoming: Array<{
     booking: { ref: string; nightId: string };
@@ -68,23 +71,27 @@ export function MemberHome() {
       {data && (
         <div className="mt-10 space-y-10">
           {data.member ? (
-            <div className="rounded-2xl border border-line bg-chalk-hot p-6">
-              <p className="font-display text-2xl font-semibold">{data.member.fullName}</p>
-              <p className="mt-2 text-sm text-steel">
-                Pass credits: <strong className="text-void">{data.member.passCredits}</strong>
-                {" · "}
-                Referral credit: <strong className="text-void">{formatNaira(data.member.creditNaira)}</strong>
-                {" · "}
-                Code: <strong className="font-mono text-void">{data.member.referralCode}</strong>
-              </p>
-              <p className="mt-3 text-sm text-steel">
-                Share{" "}
-                <Link className="underline" href={`/apply?ref=${data.member.referralCode}`}>
-                  your invite link
-                </Link>{" "}
-                — you both get ₦2,000.
-              </p>
-            </div>
+            <>
+              <div className="rounded-2xl border border-line bg-chalk-hot p-6">
+                <p className="font-display text-2xl font-semibold">{data.member.fullName}</p>
+                <p className="mt-2 text-sm text-steel">
+                  Pass credits: <strong className="text-void">{data.member.passCredits}</strong>
+                  {" · "}
+                  Referral credit: <strong className="text-void">{formatNaira(data.member.creditNaira)}</strong>
+                  {" · "}
+                  Code: <strong className="font-mono text-void">{data.member.referralCode}</strong>
+                </p>
+                <p className="mt-3 text-sm text-steel">
+                  Share{" "}
+                  <Link className="underline" href={`/apply?ref=${data.member.referralCode}`}>
+                    your invite link
+                  </Link>{" "}
+                  — you both get ₦2,000.
+                </p>
+              </div>
+
+              <MemberPreferences member={data.member} onUpdate={() => onSubmit(new Event("submit") as any)} />
+            </>
           ) : (
             <p className="text-steel">
               No account yet for that email.{" "}

@@ -1,7 +1,9 @@
 import type { Night, NightFormat } from "./types";
+import { isTestMode, TEST_MODE_FEE_NAIRA } from "./pricing";
 
-/** Seat fee: ₦10k most hangouts · ₦8k brunch */
+/** Seat fee: ₦10k most hangouts · ₦8k brunch (or ₦2k in test mode) */
 function feeFor(format: NightFormat) {
+  if (isTestMode()) return TEST_MODE_FEE_NAIRA;
   return format === "brunch" ? 8000 : 10000;
 }
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BookingForm } from "@/components/BookingForm";
+import { ShareButton } from "@/components/ShareButton";
 import {
   cityLabel,
   formatLabel,
@@ -38,9 +39,12 @@ export default async function NightDetailPage({ params }: Props) {
     <div className="page-shell pt-[4.25rem]">
       <div className="mx-auto grid max-w-6xl gap-12 px-5 py-14 md:grid-cols-2 md:px-8 md:py-20">
         <div>
-          <Link href="/nights" className="text-sm font-semibold text-steel hover:text-void">
-            ← All nights
-          </Link>
+          <div className="flex items-center justify-between">
+            <Link href="/nights" className="text-sm font-semibold text-steel hover:text-void">
+              ← All nights
+            </Link>
+            <ShareButton night={night} />
+          </div>
           <p className="mt-8 text-sm font-semibold uppercase tracking-[0.18em] text-clay">
             {cityLabel(night.city)} · {night.area}
           </p>

@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { formatNaira } from "@/lib/nights";
+import { OpsAnalytics } from "@/components/OpsAnalytics";
 
 type OpsPayload = {
   summary: {
@@ -139,6 +140,8 @@ export default function OpsPage() {
                 </div>
               ))}
             </div>
+
+            <OpsAnalytics bookings={data.bookings} passes={data.passes} />
 
             <section>
               <h2 className="font-display text-2xl font-semibold">Bookings</h2>
