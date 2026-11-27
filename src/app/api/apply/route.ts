@@ -29,6 +29,8 @@ export async function POST(request: Request) {
     const howFound = String(body.howFound || "").trim();
     const referralCode = String(body.referralCode || "").trim().toUpperCase();
 
+    console.log("[apply] Processing application for:", email);
+
     if (!fullName || !email || !area || !reason) {
       return NextResponse.json({ error: "Please fill every required field." }, { status: 400 });
     }
@@ -45,14 +47,30 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Pick why you want to Pull Up." }, { status: 400 });
     }
 
-    const existing = await findMemberByEmail(email);
-    if (existing) {
-      return NextResponse.json({
-        ok: true,
-        id: existing.id,
-        referralCode: existing.referralCode,
-        returning: true,
-      });
+    let existing = null;
+    try {
+      existing = await findMemberByEmail(email);
+      if (existing) {
+        console.log("[apply] Returning member found:", existing.id);
+        return NextResponse.json({
+          ok: true,
+          id: existing.id,
+          referralCode: existing.referralCode,
+          returning: true,
+        });
+      }
+    } catch (dbErr) {
+      console.error("[apply] Database check failed:", dbErr);
+      if (!process.env.MONGODB_URI) {
+        return NextResponse.json(
+          { error: "Database not configured. Please set MONGODB_URI in environment variables." },
+          { status: 503 },
+        );
+      }
+      return NextResponse.json(
+        { error: "Database connection failed. Please try again." },
+        { status: 503 },
+      );
     }
 
     let referredBy: string | undefined;
@@ -90,7 +108,16 @@ export async function POST(request: Request) {
       status: "active",
     };
 
-    await saveMember(entry);
+    try {
+      await saveMember(entry);
+      console.log("[apply] Member saved successfully:", entry.id);
+    } catch (saveErr) {
+      console.error("[apply] Failed to save member:", saveErr);
+      return NextResponse.json(
+        { error: "Failed to save registration. Please try again." },
+        { status: 500 },
+      );
+    }
 
     try {
       const firstName = fullName.trim().split(/\s+/)[0] || fullName;
@@ -98,10 +125,12 @@ export async function POST(request: Request) {
         to: email,
         payload: welcomeEmail({ firstName, referralCode: entry.referralCode }),
       });
+      console.log("[apply] Welcome email sent to:", email);
     } catch (mailErr) {
-      console.error("[apply] email", mailErr);
+      console.error("[apply] Email send failed (non-blocking):", mailErr);
     }
 
+    console.log("[apply] Registration complete:", entry.id);
     return NextResponse.json({
       ok: true,
       id: entry.id,
@@ -109,7 +138,11 @@ export async function POST(request: Request) {
       creditNaira: entry.creditNaira,
     });
   } catch (err) {
-    console.error("[apply]", err);
-    return NextResponse.json({ error: "Could not save your registration." }, { status: 500 });
+    console.error("[apply] Unexpected error:", err);
+    const errorMessage = err instanceof Error ? err.message : "Unknown error";
+    return NextResponse.json(
+      { error: `Could not save your registration: ${errorMessage}` },
+      { status: 500 },
+    );
   }
 }

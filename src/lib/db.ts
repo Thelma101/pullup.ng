@@ -16,20 +16,31 @@ global.mongooseCache = cached;
 export async function dbConnect() {
   const uri = process.env.MONGODB_URI;
   if (!uri) {
-    throw new Error("Missing MONGODB_URI in .env.local");
+    const error = new Error("Missing MONGODB_URI in environment variables. Please configure MongoDB connection.");
+    console.error("[db] Configuration error:", error.message);
+    throw error;
   }
 
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(uri, { bufferCommands: false }).then((m) => m);
+    console.log("[db] Initiating MongoDB connection...");
+    cached.promise = mongoose.connect(uri, { 
+      bufferCommands: false,
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+    }).then((m) => {
+      console.log("[db] MongoDB connected successfully");
+      return m;
+    });
   }
 
   try {
     cached.conn = await cached.promise;
   } catch (err) {
+    console.error("[db] Connection failed:", err);
     cached.promise = null;
-    throw err;
+    throw new Error(`MongoDB connection failed: ${err instanceof Error ? err.message : "Unknown error"}`);
   }
 
   return cached.conn;
