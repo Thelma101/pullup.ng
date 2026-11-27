@@ -13,7 +13,7 @@ This is almost always caused by **missing or incorrect MongoDB configuration**.
 Look in your `.env.local` file (or environment variables on the server). You should have:
 
 ```env
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/pullup?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@YOUR_CLUSTER.mongodb.net/pullup?retryWrites=true&w=majority
 ```
 
 **If this is missing or incorrect, the form will fail.**
@@ -46,7 +46,7 @@ MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/pullup?retryWrit
 **For local development:**
 Create or edit `.env.local` in the project root:
 ```env
-MONGODB_URI=mongodb+srv://your-username:your-password@cluster0.xxxxx.mongodb.net/pullup?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@YOUR_CLUSTER.mongodb.net/pullup?retryWrites=true&w=majority
 ```
 
 **For production (cPanel, Vercel, etc.):**
@@ -76,9 +76,9 @@ npm start
 - For testing, temporarily allow all IPs (0.0.0.0/0)
 
 #### 3. Connection string format
-Your connection string should look like:
+Your connection string should look like this (with YOUR actual values):
 ```
-mongodb+srv://username:password@cluster0.abcde.mongodb.net/pullup?retryWrites=true&w=majority
+mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@YOUR_CLUSTER.mongodb.net/pullup?retryWrites=true&w=majority
 ```
 
 **Common mistakes:**
@@ -177,14 +177,14 @@ The error message will usually tell you exactly what's wrong:
 ## Working Example
 
 ```env
-# .env.local
-MONGODB_URI=mongodb+srv://pullup:MySecureP@ss123@cluster0.abc123.mongodb.net/pullup?retryWrites=true&w=majority
+# .env.local - REPLACE ALL VALUES WITH YOUR ACTUAL CREDENTIALS
+MONGODB_URI=mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@YOUR_CLUSTER.mongodb.net/pullup?retryWrites=true&w=majority
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
-RESEND_API_KEY=re_123456789
+RESEND_API_KEY=YOUR_RESEND_API_KEY_HERE
 EMAIL_FROM=PullUp <hello@gopullup.ng>
-PAYSTACK_SECRET_KEY=sk_test_123456789
-NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY=pk_test_123456789
-OPS_DASHBOARD_SECRET=my-secret-key-12345
+PAYSTACK_SECRET_KEY=YOUR_PAYSTACK_SECRET_KEY
+NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY=YOUR_PAYSTACK_PUBLIC_KEY
+OPS_DASHBOARD_SECRET=YOUR_RANDOM_SECRET_STRING
 ```
 
-After setting this up, restart your dev server and the form should work!
+After setting this up with your actual credentials, restart your dev server and the form should work!

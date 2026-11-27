@@ -7,7 +7,7 @@ Before running the application, you need to configure these environment variable
 ### 1. Database (Required)
 
 ```env
-MONGODB_URI=mongodb+srv://USER:PASSWORD@cluster.mongodb.net/pullup?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@YOUR_CLUSTER.mongodb.net/pullup?retryWrites=true&w=majority
 ```
 
 **How to set up MongoDB:**
@@ -21,7 +21,7 @@ MONGODB_URI=mongodb+srv://USER:PASSWORD@cluster.mongodb.net/pullup?retryWrites=t
 ### 2. Email (Required for production)
 
 ```env
-RESEND_API_KEY=re_xxxxxxxxxxxxx
+RESEND_API_KEY=YOUR_RESEND_API_KEY_HERE
 EMAIL_FROM=PullUp <hello@gopullup.ng>
 ```
 
@@ -34,8 +34,8 @@ EMAIL_FROM=PullUp <hello@gopullup.ng>
 ### 3. Payments (Required for bookings)
 
 ```env
-PAYSTACK_SECRET_KEY=sk_live_xxxxxxxxxxxxx
-NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY=pk_live_xxxxxxxxxxxxx
+PAYSTACK_SECRET_KEY=YOUR_PAYSTACK_SECRET_KEY
+NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY=YOUR_PAYSTACK_PUBLIC_KEY
 ```
 
 **How to set up Paystack:**
@@ -71,9 +71,9 @@ Set to `true` to use ₦2,000 pricing for all bookings (development only).
 ### 7. Optional: SMS Notifications
 
 ```env
-TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxx
-TWILIO_AUTH_TOKEN=your-auth-token
-TWILIO_FROM_NUMBER=+1234567890
+TWILIO_ACCOUNT_SID=YOUR_TWILIO_ACCOUNT_SID
+TWILIO_AUTH_TOKEN=YOUR_TWILIO_AUTH_TOKEN
+TWILIO_FROM_NUMBER=YOUR_TWILIO_PHONE_NUMBER
 ```
 
 Only needed if you want to send SMS reminders via Twilio.
@@ -81,7 +81,7 @@ Only needed if you want to send SMS reminders via Twilio.
 ### 8. Optional: Automated Reminders
 
 ```env
-CRON_SECRET=your-cron-secret
+CRON_SECRET=YOUR_RANDOM_CRON_SECRET
 ```
 
 Used to authenticate cron job requests for automated email reminders.
