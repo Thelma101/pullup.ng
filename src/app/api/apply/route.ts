@@ -24,6 +24,7 @@ export async function POST(request: Request) {
     const area = String(body.area || "").trim();
     const reason = String(body.reason || "").trim();
     const tablePreference = String(body.tablePreference || "mixed");
+    const groupSizePreference = String(body.groupSizePreference || "any");
     const dietary = String(body.dietary || "").trim();
     const howFound = String(body.howFound || "").trim();
     const referralCode = String(body.referralCode || "").trim().toUpperCase();
@@ -78,6 +79,7 @@ export async function POST(request: Request) {
       area,
       reason,
       tablePreference: tablePreference as Member["tablePreference"],
+      groupSizePreference: groupSizePreference as Member["groupSizePreference"],
       dietary,
       howFound,
       referralCode: makeReferralCode(fullName),

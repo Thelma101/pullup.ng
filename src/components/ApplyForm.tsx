@@ -10,6 +10,7 @@ type Draft = {
   city: string;
   area: string;
   tablePreference: string;
+  groupSizePreference: string;
   reason: string;
   dietary: string;
   howFound: string;
@@ -23,6 +24,7 @@ const empty: Draft = {
   city: "",
   area: "",
   tablePreference: "mixed",
+  groupSizePreference: "any",
   reason: "",
   dietary: "",
   howFound: "",
@@ -224,6 +226,20 @@ function ApplyFormInner() {
               <option value="mixed">Mixed table</option>
               <option value="women-only">Women-only</option>
               <option value="men-only">Men-only</option>
+            </select>
+          </div>
+          <div>
+            <label className="field-label" htmlFor="groupSizePreference">Preferred group size</label>
+            <select
+              id="groupSizePreference"
+              className="field cursor-pointer"
+              value={draft.groupSizePreference}
+              onChange={(e) => update("groupSizePreference", e.target.value)}
+            >
+              <option value="any">Any size (default)</option>
+              <option value="intimate">Intimate (4-5 people)</option>
+              <option value="medium">Medium (6-7 people)</option>
+              <option value="large">Large (8+ people)</option>
             </select>
           </div>
         </div>

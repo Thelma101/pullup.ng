@@ -2,6 +2,8 @@ export type City = "lagos" | "abuja";
 
 export type TablePreference = "mixed" | "women-only" | "men-only";
 
+export type GroupSizePreference = "any" | "intimate" | "medium" | "large";
+
 export type NightFormat =
   | "dinner"
   | "drinks"
@@ -36,6 +38,7 @@ export interface Member {
   area: string;
   reason: string;
   tablePreference: TablePreference;
+  groupSizePreference?: GroupSizePreference;
   dietary?: string;
   howFound?: string;
   referralCode: string;

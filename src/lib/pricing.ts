@@ -2,6 +2,12 @@ import type { PassPlan } from "./types";
 
 export const REFERRAL_CREDIT_NAIRA = 2000;
 
+export const TEST_MODE_FEE_NAIRA = 2000;
+
+export function isTestMode() {
+  return process.env.NEXT_PUBLIC_TEST_MODE === "true";
+}
+
 export const PASS_PLANS: Record<
   PassPlan,
   { label: string; credits: number; amountNaira: number; blurb: string; saveNaira: number }
