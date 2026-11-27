@@ -41,9 +41,7 @@ export async function sendBookingReminder(reminder: BookingReminder) {
 
   await sendEmail({
     to: reminder.email,
-    subject,
-    text,
-    html,
+    payload: { subject, text, html },
   });
 }
 
@@ -89,9 +87,7 @@ export async function sendVenueDetails(params: {
 
   await sendEmail({
     to: params.email,
-    subject,
-    text,
-    html,
+    payload: { subject, text, html },
   });
 }
 

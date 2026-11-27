@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { sendVenueDetails } from "@/lib/notifications";
 import { BookingModel } from "@/lib/models";
-import { connectDB } from "@/lib/db";
+import { dbConnect } from "@/lib/db";
 
 export async function POST(request: Request) {
   try {
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
       );
     }
 
-    await connectDB();
+    await dbConnect();
 
     const bookings = await BookingModel.find({
       nightId,

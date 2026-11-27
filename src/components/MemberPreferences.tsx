@@ -7,6 +7,7 @@ type Member = {
   email: string;
   city: string;
   tablePreference: string;
+  groupSizePreference?: string;
   dietary?: string;
 };
 
@@ -20,6 +21,7 @@ type Preferences = {
   smsReminders: boolean;
   marketingEmails: boolean;
   defaultTablePreference: string;
+  groupSizePreference: string;
   dietaryNotes: string;
   favoriteFormats: string[];
 };
@@ -34,6 +36,7 @@ export function MemberPreferences({ member, onUpdate }: MemberPreferencesProps) 
     smsReminders: false,
     marketingEmails: true,
     defaultTablePreference: member.tablePreference || "mixed",
+    groupSizePreference: member.groupSizePreference || "any",
     dietaryNotes: member.dietary || "",
     favoriteFormats: [],
   });
@@ -138,6 +141,23 @@ export function MemberPreferences({ member, onUpdate }: MemberPreferencesProps) 
                   <option value="mixed">Mixed</option>
                   <option value="women-only">Women-only</option>
                   <option value="men-only">Men-only</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="field-label" htmlFor="groupSize">
+                  Preferred group size
+                </label>
+                <select
+                  id="groupSize"
+                  value={prefs.groupSizePreference}
+                  onChange={(e) => setPrefs({ ...prefs, groupSizePreference: e.target.value })}
+                  className="field cursor-pointer"
+                >
+                  <option value="any">Any size (default)</option>
+                  <option value="intimate">Intimate (4-5 people)</option>
+                  <option value="medium">Medium (6-7 people)</option>
+                  <option value="large">Large (8+ people)</option>
                 </select>
               </div>
 

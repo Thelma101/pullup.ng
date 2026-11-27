@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { send24HourReminder } from "@/lib/notifications";
 import { BookingModel } from "@/lib/models";
-import { connectDB } from "@/lib/db";
+import { dbConnect } from "@/lib/db";
 import { nights } from "@/lib/nights";
 
 export async function POST(request: Request) {
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await connectDB();
+    await dbConnect();
 
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);

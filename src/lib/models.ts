@@ -34,6 +34,7 @@ const memberSchema = new Schema<Member>(
     area: { type: String, required: true },
     reason: { type: String, required: true },
     tablePreference: { type: String, required: true },
+    groupSizePreference: { type: String, default: "any" },
     dietary: String,
     howFound: String,
     referralCode: { type: String, required: true, unique: true },

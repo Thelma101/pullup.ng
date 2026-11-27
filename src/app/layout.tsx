@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque, Outfit } from "next/font/google";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
-import { TestModeBanner } from "@/components/TestModeBanner";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -38,7 +37,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${bricolage.variable} ${outfit.variable} h-full`}>
       <body className="flex min-h-full flex-col antialiased">
-        <TestModeBanner />
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />

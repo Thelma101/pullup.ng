@@ -19,6 +19,7 @@ export async function PATCH(request: Request) {
     const updated = {
       ...member,
       tablePreference: preferences.defaultTablePreference || member.tablePreference,
+      groupSizePreference: preferences.groupSizePreference || member.groupSizePreference || "any",
       dietary: preferences.dietaryNotes || member.dietary,
     };
 

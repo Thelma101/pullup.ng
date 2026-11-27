@@ -39,7 +39,7 @@ export function ShareButton({ night }: ShareButtonProps) {
   };
 
   const handleNativeShare = async () => {
-    if (navigator.share) {
+    if (typeof navigator !== "undefined" && "share" in navigator && navigator.share) {
       try {
         await navigator.share({
           title: "PullUp",
@@ -71,7 +71,7 @@ export function ShareButton({ night }: ShareButtonProps) {
           <div className="fixed inset-0 z-10" onClick={() => setShowMenu(false)} />
           <div className="absolute right-0 top-full z-20 mt-2 w-56 rounded-xl border border-line bg-white shadow-lg">
             <div className="p-2">
-              {typeof navigator !== "undefined" && navigator.share && (
+              {typeof navigator !== "undefined" && "share" in navigator && (
                 <button
                   type="button"
                   onClick={handleNativeShare}

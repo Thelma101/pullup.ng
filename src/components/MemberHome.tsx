@@ -14,6 +14,7 @@ type MePayload = {
     referralCode: string;
     city: string;
     tablePreference: string;
+    groupSizePreference?: string;
     dietary?: string;
   } | null;
   upcoming: Array<{
