@@ -3,8 +3,6 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { PassCheckout } from "@/components/PassCheckout";
 import { PassStatus } from "@/components/PassStatus";
-import { PASS_PLANS } from "@/lib/pricing";
-import { formatNaira } from "@/lib/nights";
 
 export const metadata: Metadata = {
   title: "Pricing & Pass",
@@ -13,69 +11,57 @@ export const metadata: Metadata = {
 export default function FeePage() {
   return (
     <div className="page-shell pt-[4.25rem]">
-      <div className="mx-auto max-w-6xl px-5 py-14 md:px-8 md:py-20">
+      <div className="mx-auto max-w-3xl px-5 py-14 md:px-8 md:py-20">
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-clay">Pricing</p>
-        <h1 className="mt-4 font-display text-4xl font-bold tracking-tight md:text-5xl">
-          What you pay.
-        </h1>
-        <p className="mt-5 max-w-2xl text-lg text-steel">
-          Seat fee to PullUp. Food &amp; drinks on you at the venue.
+        <h1 className="mt-4 font-display text-4xl font-bold tracking-tight md:text-5xl">Seats &amp; Passes</h1>
+        <p className="mt-4 max-w-xl text-lg text-steel">
+          Seat fee to us. Food &amp; drinks on you at the venue.
         </p>
 
-        <div className="mt-12 max-w-3xl rounded-2xl bg-void px-7 py-9 text-chalk">
-          <div className="space-y-5">
-            <div className="flex items-end justify-between gap-4 border-b border-white/10 pb-4">
-              <div>
-                <p>Seat (per hangout)</p>
-                <p className="mt-1 text-xs text-white/45">Paystack checkout</p>
-              </div>
-              <span className="font-display text-3xl font-bold">₦8k–₦10k</span>
+        <div className="mt-10 divide-y divide-line border-y border-line">
+          <div className="flex items-baseline justify-between gap-4 py-5">
+            <div>
+              <p className="font-semibold text-void">Seat</p>
+              <p className="text-sm text-steel">Dinner, drinks, beach, games…</p>
             </div>
-            <div className="flex items-end justify-between gap-4">
-              <div>
-                <p>Food &amp; drinks</p>
-                <p className="mt-1 text-xs text-white/45">On you — pay at the venue</p>
-              </div>
-              <span className="font-display text-3xl font-bold">from ₦15,000</span>
+            <p className="font-display text-2xl font-bold">₦10k</p>
+          </div>
+          <div className="flex items-baseline justify-between gap-4 py-5">
+            <div>
+              <p className="font-semibold text-void">Brunch</p>
+              <p className="text-sm text-steel">Lighter seat</p>
             </div>
+            <p className="font-display text-2xl font-bold">₦8k</p>
+          </div>
+          <div className="flex items-baseline justify-between gap-4 py-5">
+            <div>
+              <p className="font-semibold text-void">Food &amp; drinks</p>
+              <p className="text-sm text-steel">Pay at the venue</p>
+            </div>
+            <p className="font-display text-2xl font-bold">from ₦15k</p>
           </div>
         </div>
 
-        <div id="pass" className="mt-20 scroll-mt-28">
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-clay">PullUp Pass</p>
-          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight md:text-4xl">
-            Come more than once. Pay less.
-          </h2>
-          <p className="mt-4 max-w-2xl text-steel">
-            One-off seats add up (3 × ₦10k = ₦30k). The Pass locks in hangouts for less, and you can
-            mix dinner, drinks, beach, brunch — different people each time.
+        <div id="pass" className="mt-16 scroll-mt-28">
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-clay">Pass</p>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight">Come often. Spend less.</h2>
+          <p className="mt-3 max-w-xl text-steel">
+            Three one-offs ≈ ₦30k. A Pass is cheaper — mix vibes, new people each time. One credit = one seat.
           </p>
-          <ul className="mt-5 space-y-2 text-sm text-void-soft">
-            <li>
-              • {formatNaira(PASS_PLANS.pass_3.amountNaira)} for 3 hangouts — save about{" "}
-              {formatNaira(PASS_PLANS.pass_3.saveNaira)}
-            </li>
-            <li>
-              • {formatNaira(PASS_PLANS.pass_5.amountNaira)} for 5 hangouts — save about{" "}
-              {formatNaira(PASS_PLANS.pass_5.saveNaira)}
-            </li>
-            <li>• Credits apply when you book. Unused credits don’t unlock free networking chats.</li>
-          </ul>
 
           <Suspense fallback={null}>
             <PassStatus />
           </Suspense>
 
-          <div className="mt-10 max-w-xl rounded-2xl border border-line bg-chalk-hot p-5 md:p-8">
+          <div className="mt-8 rounded-2xl border border-line bg-chalk-hot p-5 md:p-7">
             <PassCheckout />
           </div>
         </div>
 
-        <h2 className="mt-16 font-display text-2xl font-semibold">Refunds &amp; moves</h2>
-        <ul className="mt-4 max-w-2xl space-y-2 text-steel">
-          <li>• Full refund if you cancel 3+ days out, or if we cancel / the table doesn’t fill</li>
-          <li>• Move free to another night in your city with 3+ days’ notice</li>
-        </ul>
+        <div className="mt-14 text-sm text-steel">
+          <p className="font-semibold text-void">Refunds</p>
+          <p className="mt-2">Full refund if you cancel 3+ days out, or if we cancel / the table doesn’t fill. Free move to another night in your city with 3+ days’ notice.</p>
+        </div>
 
         <Link href="/nights" className="btn-primary mt-10 inline-flex">
           See hangouts

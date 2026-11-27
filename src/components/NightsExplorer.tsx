@@ -5,10 +5,10 @@ import type { City, Night, NightFormat } from "@/lib/types";
 import { formatLabel } from "@/lib/nights";
 import { NightCard } from "./NightCard";
 
-type FormatFilter = NightFormat | "surprise" | "outdoors";
+type FormatFilter = NightFormat | "all" | "outdoors";
 
 const filters: Array<{ value: FormatFilter; label: string }> = [
-  { value: "surprise", label: "Any (surprise me)" },
+  { value: "all", label: "All" },
   { value: "dinner", label: "Dinner" },
   { value: "drinks", label: "Drinks" },
   { value: "outdoors", label: "Beach / Picnic" },
@@ -18,11 +18,11 @@ const filters: Array<{ value: FormatFilter; label: string }> = [
 
 export function NightsExplorer({ nights }: { nights: Night[] }) {
   const [city, setCity] = useState<City | "all">("all");
-  const [format, setFormat] = useState<FormatFilter>("surprise");
+  const [format, setFormat] = useState<FormatFilter>("all");
 
   const filtered = useMemo(() => {
     let list = nights.filter((n) => (city === "all" ? true : n.city === city));
-    if (format === "surprise") return [...list].sort((a, b) => a.date.localeCompare(b.date));
+    if (format === "all") return [...list].sort((a, b) => a.date.localeCompare(b.date));
     if (format === "outdoors") return list.filter((n) => n.format === "beach" || n.format === "picnic");
     return list.filter((n) => n.format === format);
   }, [city, format, nights]);

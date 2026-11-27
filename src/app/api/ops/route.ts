@@ -14,27 +14,40 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const [members, bookings, passes, community] = await Promise.all([
-    listMembers(),
-    listBookings(),
-    listPasses(),
-    listCommunity(),
-  ]);
+  try {
+    const [members, bookings, passes, community] = await Promise.all([
+      listMembers(),
+      listBookings(),
+      listPasses(),
+      listCommunity(),
+    ]);
 
-  return NextResponse.json({
-    members,
-    bookings,
-    passes,
-    community,
-    summary: {
-      members: members.length,
-      paidBookings: bookings.filter((b) => b.paymentStatus === "paid").length,
-      pendingBookings: bookings.filter((b) => b.paymentStatus === "pending").length,
-      noShows: bookings.filter((b) => b.paymentStatus === "no_show").length,
-      activePasses: passes.filter((p) => p.paymentStatus === "paid").length,
-      communityLeads: community.length,
-    },
-  });
+    return NextResponse.json({
+      members,
+      bookings,
+      passes,
+      community,
+      summary: {
+        members: members.length,
+        paidBookings: bookings.filter((b) => b.paymentStatus === "paid").length,
+        pendingBookings: bookings.filter((b) => b.paymentStatus === "pending").length,
+        noShows: bookings.filter((b) => b.paymentStatus === "no_show").length,
+        activePasses: passes.filter((p) => p.paymentStatus === "paid").length,
+        communityLeads: community.length,
+      },
+    });
+  } catch (err) {
+    console.error("[ops]", err);
+    return NextResponse.json(
+      {
+        error:
+          err instanceof Error
+            ? `Ops load failed: ${err.message}`
+            : "Ops load failed — check MONGODB_URI",
+      },
+      { status: 503 },
+    );
+  }
 }
 
 export async function PATCH(request: Request) {

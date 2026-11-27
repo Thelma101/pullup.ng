@@ -49,7 +49,7 @@ export function PassCheckout() {
               type="button"
               onClick={() => setPlan(key)}
               className={`cursor-pointer rounded-2xl border px-5 py-5 text-left transition ${
-                active ? "border-void bg-void text-chalk" : "border-line bg-chalk-hot hover:border-void/30"
+                active ? "border-void bg-void text-chalk" : "border-line bg-chalk hover:border-void/30"
               }`}
             >
               <p className={`text-xs font-semibold uppercase tracking-[0.14em] ${active ? "text-white/55" : "text-steel"}`}>
@@ -62,13 +62,19 @@ export function PassCheckout() {
         })}
       </div>
 
-      <div>
-        <label className="field-label" htmlFor="fullName">Full name</label>
-        <input id="fullName" name="fullName" required className="field" />
-      </div>
-      <div>
-        <label className="field-label" htmlFor="email">Email</label>
-        <input id="email" name="email" type="email" required className="field" />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label className="field-label" htmlFor="fullName">
+            Full name
+          </label>
+          <input id="fullName" name="fullName" required className="field" autoComplete="name" />
+        </div>
+        <div>
+          <label className="field-label" htmlFor="email">
+            Email
+          </label>
+          <input id="email" name="email" type="email" required className="field" autoComplete="email" />
+        </div>
       </div>
 
       {error && (
@@ -76,11 +82,9 @@ export function PassCheckout() {
       )}
 
       <button type="submit" disabled={loading} className="btn-primary w-full disabled:opacity-60">
-        {loading ? "Opening Paystack…" : `Pay ${formatNaira(PASS_PLANS[plan].amountNaira)} with Paystack`}
+        {loading ? "Opening Paystack…" : `Pay ${formatNaira(PASS_PLANS[plan].amountNaira)}`}
       </button>
-      <p className="text-center text-xs text-steel">
-        Secured by Paystack · card, transfer, OPay. Without keys in `.env`, demo checkout still completes locally.
-      </p>
+      <p className="text-center text-xs text-steel">Paystack · card, transfer, OPay</p>
     </form>
   );
 }

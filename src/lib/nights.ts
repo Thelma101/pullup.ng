@@ -1,5 +1,10 @@
 import type { Night, NightFormat } from "./types";
 
+/** Seat fee: ₦10k most hangouts · ₦8k brunch */
+function feeFor(format: NightFormat) {
+  return format === "brunch" ? 8000 : 10000;
+}
+
 export const nights: Night[] = [
   {
     id: "lagos-dinner-nov-22",
@@ -10,7 +15,7 @@ export const nights: Night[] = [
     time: "19:00",
     seatsTotal: 5,
     seatsTaken: 2,
-    feeNaira: 10000,
+    feeNaira: feeFor("dinner"),
     minSpendNaira: 15000,
     status: "open",
   },
@@ -23,7 +28,7 @@ export const nights: Night[] = [
     time: "19:00",
     seatsTotal: 5,
     seatsTaken: 1,
-    feeNaira: 10000,
+    feeNaira: feeFor("dinner"),
     minSpendNaira: 15000,
     status: "open",
   },
@@ -36,7 +41,7 @@ export const nights: Night[] = [
     time: "19:00",
     seatsTotal: 5,
     seatsTaken: 1,
-    feeNaira: 8000,
+    feeNaira: feeFor("drinks"),
     minSpendNaira: 15000,
     status: "open",
   },
@@ -49,7 +54,7 @@ export const nights: Night[] = [
     time: "14:00",
     seatsTotal: 6,
     seatsTaken: 6,
-    feeNaira: 8000,
+    feeNaira: feeFor("beach"),
     minSpendNaira: 15000,
     status: "full",
   },
@@ -62,7 +67,7 @@ export const nights: Night[] = [
     time: "16:00",
     seatsTotal: 6,
     seatsTaken: 0,
-    feeNaira: 8000,
+    feeNaira: feeFor("games"),
     minSpendNaira: 15000,
     status: "open",
   },
@@ -75,7 +80,7 @@ export const nights: Night[] = [
     time: "15:00",
     seatsTotal: 6,
     seatsTaken: 5,
-    feeNaira: 8000,
+    feeNaira: feeFor("picnic"),
     minSpendNaira: 15000,
     status: "flash",
   },
@@ -88,7 +93,7 @@ export const nights: Night[] = [
     time: "12:30",
     seatsTotal: 5,
     seatsTaken: 0,
-    feeNaira: 8000,
+    feeNaira: feeFor("brunch"),
     minSpendNaira: 15000,
     status: "open",
   },
@@ -101,7 +106,7 @@ export const nights: Night[] = [
     time: "15:00",
     seatsTotal: 6,
     seatsTaken: 0,
-    feeNaira: 8000,
+    feeNaira: feeFor("games"),
     minSpendNaira: 15000,
     status: "open",
   },

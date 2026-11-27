@@ -71,8 +71,14 @@ export default function OpsPage() {
       const res = await fetch(`/api/ops?key=${encodeURIComponent(key)}`, {
         headers: { "x-ops-key": key },
       });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || "Unauthorized");
+      const text = await res.text();
+      let json: OpsPayload & { error?: string };
+      try {
+        json = text ? JSON.parse(text) : ({} as OpsPayload);
+      } catch {
+        throw new Error("Ops API returned invalid JSON — is the server / Mongo up?");
+      }
+      if (!res.ok) throw new Error(json.error || `Unauthorized (${res.status})`);
       setData(json);
     } catch (err) {
       setData(null);

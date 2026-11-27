@@ -11,14 +11,14 @@ export const PASS_PLANS: Record<
     credits: 3,
     amountNaira: 20000,
     saveNaira: 10000,
-    blurb: "Save ~₦10k vs booking one-by-one.",
+    blurb: "≈ ₦6.7k each · save ~₦10k",
   },
   pass_5: {
     label: "5 hangouts / month",
     credits: 5,
     amountNaira: 35000,
     saveNaira: 15000,
-    blurb: "Save ~₦15k. Best if you Pull Up often.",
+    blurb: "≈ ₦7k each · save ~₦15k",
   },
 };
 

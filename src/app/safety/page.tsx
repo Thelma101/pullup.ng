@@ -5,9 +5,14 @@ export const metadata: Metadata = {
   title: "Safety",
 };
 
-const EMERGENCY_WHATSAPP = "2348000000000"; // replace with live ops number
+const EMERGENCY =
+  process.env.NEXT_PUBLIC_EMERGENCY_WHATSAPP?.replace(/\D/g, "") || "";
 
 export default function SafetyPage() {
+  const emergencyHref = EMERGENCY
+    ? `https://wa.me/${EMERGENCY}?text=${encodeURIComponent("PullUp — I need to report something.")}`
+    : "mailto:hello@gopullup.ng?subject=PullUp%20report";
+
   return (
     <div className="page-shell pt-[4.25rem]">
       <div className="mx-auto max-w-3xl px-5 py-14 md:px-8 md:py-20">
@@ -15,23 +20,21 @@ export default function SafetyPage() {
         <h1 className="mt-4 font-display text-4xl font-bold tracking-tight md:text-5xl">
           Strangers, with guardrails.
         </h1>
-        <p className="mt-5 text-lg text-steel">
-          Public venues. Small tables. You can leave anytime.
-        </p>
+        <p className="mt-5 text-lg text-steel">Public venues. Small tables. You can leave anytime.</p>
 
         <div className="mt-12 space-y-0">
           {[
             {
               t: "Account + payment",
-              d: "Create an account with email, then book and pay. We remove people who break trust.",
+              d: "Email to join, Paystack to book. We remove people who break trust.",
             },
             {
-              t: "Women-only / men-only tables",
-              d: "Ask when you apply or book. Mixed tables stay available.",
+              t: "Table choice",
+              d: "Mixed, women-only, or men-only — pick when you book.",
             },
             {
               t: "Public venues only",
-              d: "Restaurants, cafés, beaches, parks — not private homes. Area when you book; exact spot 24 hours before.",
+              d: "Restaurants, cafés, beaches, parks — not private homes.",
             },
             {
               t: "Arrive alone, leave on your terms",
@@ -49,12 +52,17 @@ export default function SafetyPage() {
           ))}
         </div>
 
-        <Link href="/apply" className="btn-primary mt-10 inline-flex">
-          Create account
-        </Link>
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <Link href="/apply" className="btn-primary text-center">
+            Create account
+          </Link>
+          <Link href="/how" className="btn-secondary text-center">
+            How it works
+          </Link>
+        </div>
 
         <a
-          href={`https://wa.me/${EMERGENCY_WHATSAPP}?text=${encodeURIComponent("PullUp emergency — I need help now.")}`}
+          href={emergencyHref}
           target="_blank"
           rel="noopener noreferrer"
           className="mt-16 flex w-full items-center justify-between gap-4 rounded-2xl bg-[#b42318] px-6 py-5 text-left text-white transition hover:bg-[#912018]"
@@ -63,15 +71,13 @@ export default function SafetyPage() {
             <span className="block text-xs font-semibold uppercase tracking-[0.16em] text-white/75">
               Emergency
             </span>
-            <span className="mt-1 block font-display text-xl font-semibold">
-              Feel unsafe? Leave.
-            </span>
+            <span className="mt-1 block font-display text-xl font-semibold">Feel unsafe? Leave.</span>
             <span className="mt-1 block text-sm text-white/80">
-              If you need to report, then tap here. Opens WhatsApp to PullUp ops.
+              {EMERGENCY ? "Need to report something? WhatsApp us." : "Need to report something? Email hello@gopullup.ng."}
             </span>
           </span>
           <span className="shrink-0 rounded-lg bg-white/15 px-3 py-2 text-sm font-semibold">
-            Message now
+            WhatsApp
           </span>
         </a>
       </div>

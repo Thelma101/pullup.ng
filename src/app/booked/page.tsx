@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { cityLabel, formatLabel, formatNightDate, getNight } from "@/lib/nights";
 
 function BookedInner() {
@@ -10,6 +10,7 @@ function BookedInner() {
   const nightId = params.get("night") || "";
   const ref = params.get("ref") || "BR-HOLD";
   const night = getNight(nightId);
+  const [community, setCommunity] = useState<"idle" | "yes" | "no">("idle");
 
   return (
     <div className="page-shell pt-[4.25rem]">
@@ -30,10 +31,33 @@ function BookedInner() {
           Ref {ref}
         </p>
         <p className="mt-8 max-w-md text-sm leading-relaxed text-steel">
-          Payment confirmed (or demo checkout if Paystack keys aren’t set yet). Food &amp; drinks
-          are on you at the venue. Exact spot lands in your email 24 hours before.
+          Food &amp; drinks on you at the venue. Exact spot by email 24 hours before.
         </p>
-        <Link href="/nights" className="btn-primary mt-10 inline-flex w-fit">
+
+        <div className="mt-10 max-w-md rounded-2xl border border-line bg-chalk-hot px-5 py-5">
+          <p className="font-display text-xl font-semibold text-void">WhatsApp community?</p>
+          <p className="mt-2 text-sm text-steel">
+            Hangout drops and flash seats. Optional — your paid seat is already locked.
+          </p>
+          {community === "idle" ? (
+            <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+              <Link href="/community" className="btn-primary text-center sm:flex-1">
+                Yes, add me
+              </Link>
+              <button
+                type="button"
+                onClick={() => setCommunity("no")}
+                className="btn-secondary sm:flex-1"
+              >
+                No thanks
+              </button>
+            </div>
+          ) : community === "no" ? (
+            <p className="mt-4 text-sm text-steel">All good — see you at the table.</p>
+          ) : null}
+        </div>
+
+        <Link href="/nights" className="btn-secondary mt-8 inline-flex w-fit">
           Back to hangouts
         </Link>
       </div>

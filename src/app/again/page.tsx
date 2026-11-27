@@ -15,11 +15,10 @@ export default function AgainPage() {
           Pull Up again?
         </h1>
         <p className="mt-5 text-lg text-steel">
-          Optional. If you already swapped numbers, you’re good — skip this.
+          Already swapped contacts at the table? You’re free to reconnect anytime — no form needed.
         </p>
         <p className="mt-3 text-steel">
-          Name someone from your table. We’ll message them to confirm. If they say yes, we connect
-          you both by email.
+          Didn’t get their number? Name them here. We ask them to confirm, then connect you by email.
         </p>
         <Suspense fallback={<p className="mt-10 text-steel">Loading…</p>}>
           <AgainForm />

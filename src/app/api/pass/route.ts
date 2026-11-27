@@ -5,6 +5,9 @@ import { savePass } from "@/lib/store";
 import type { PassPlan, PassPurchase } from "@/lib/types";
 
 function siteUrl(request: Request) {
+  if (process.env.NODE_ENV === "development") {
+    return new URL(request.url).origin;
+  }
   return process.env.NEXT_PUBLIC_SITE_URL || new URL(request.url).origin;
 }
 
@@ -54,6 +57,15 @@ export async function POST(request: Request) {
     });
   } catch (err) {
     console.error("[pass]", err);
-    return NextResponse.json({ error: "Could not start Pass checkout." }, { status: 500 });
+    const detail = err instanceof Error ? err.message : "Checkout failed";
+    return NextResponse.json(
+      {
+        error:
+          process.env.NODE_ENV === "development"
+            ? `Could not start Pass checkout: ${detail}`
+            : "Could not start Pass checkout.",
+      },
+      { status: 500 },
+    );
   }
 }

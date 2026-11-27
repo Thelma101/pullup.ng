@@ -17,7 +17,7 @@ export function SiteFooter() {
             <li><Link className="hover:text-clay" href="/">Home</Link></li>
             <li><Link className="hover:text-clay" href="/how">How it works</Link></li>
             <li><Link className="hover:text-clay" href="/nights">Upcoming hangouts</Link></li>
-            <li><Link className="hover:text-clay" href="/fee">Pricing &amp; Pass</Link></li>
+            <li><Link className="hover:text-clay" href="/fee">Pass</Link></li>
             <li><Link className="hover:text-clay" href="/community">WhatsApp community</Link></li>
             <li><Link className="hover:text-clay" href="/safety">Safety</Link></li>
           </ul>

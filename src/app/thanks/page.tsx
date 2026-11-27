@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 
 function ThanksInner() {
   const params = useSearchParams();
   const name = params.get("name") || "friend";
   const city = params.get("city") === "abuja" ? "Abuja" : "Lagos";
   const code = params.get("code") || "";
+  const [community, setCommunity] = useState<"idle" | "no">("idle");
 
   return (
     <div className="page-shell pt-[4.25rem]">
@@ -27,12 +28,30 @@ function ThanksInner() {
             <span className="mt-1 block text-steel">Share it — you both get ₦2,000 credit.</span>
           </p>
         )}
-        <div className="mt-10 flex flex-col gap-3 sm:flex-row">
+
+        <div className="mt-10 max-w-md rounded-2xl border border-line bg-chalk-hot px-5 py-5">
+          <p className="font-display text-xl font-semibold text-void">WhatsApp community?</p>
+          <p className="mt-2 text-sm text-steel">Hangout drops and flash seats. Optional.</p>
+          {community === "idle" ? (
+            <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+              <Link href="/community" className="btn-primary text-center sm:flex-1">
+                Yes, add me
+              </Link>
+              <button type="button" onClick={() => setCommunity("no")} className="btn-secondary sm:flex-1">
+                No thanks
+              </button>
+            </div>
+          ) : (
+            <p className="mt-4 text-sm text-steel">All good — book a seat when you’re ready.</p>
+          )}
+        </div>
+
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link href="/nights" className="btn-primary text-center">
             Book a hangout
           </Link>
           <Link href="/fee#pass" className="btn-secondary text-center">
-            Get a PullUp Pass
+            Get a Pass
           </Link>
         </div>
       </div>
