@@ -110,6 +110,16 @@ export async function POST(request: Request) {
     });
   } catch (err) {
     console.error("[apply]", err);
-    return NextResponse.json({ error: "Could not save your registration." }, { status: 500 });
+    const detail = err instanceof Error ? err.message : "";
+    const dbHint =
+      /MONGODB|Mongo|IP|whitelist|access list|auth|ServerSelection|placeholder/i.test(detail);
+    return NextResponse.json(
+      {
+        error: dbHint
+          ? "Database unavailable. In MongoDB Atlas → Network Access, allow 0.0.0.0/0, and set MONGODB_URI on Vercel with your real password (not <db_password>)."
+          : "Could not save your registration.",
+      },
+      { status: dbHint ? 503 : 500 },
+    );
   }
 }

@@ -37,6 +37,16 @@ export async function GET(request: Request) {
     });
   } catch (err) {
     console.error("[me]", err);
-    return NextResponse.json({ error: "Could not load your home. Try again." }, { status: 500 });
+    const detail = err instanceof Error ? err.message : "";
+    const dbHint =
+      /MONGODB|Mongo|IP|whitelist|access list|auth|ServerSelection|placeholder/i.test(detail);
+    return NextResponse.json(
+      {
+        error: dbHint
+          ? "Database unavailable. In MongoDB Atlas → Network Access, allow 0.0.0.0/0, and set MONGODB_URI on Vercel with your real password."
+          : "Could not load your home. Try again.",
+      },
+      { status: dbHint ? 503 : 500 },
+    );
   }
 }

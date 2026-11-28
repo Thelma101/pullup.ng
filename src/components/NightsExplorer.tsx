@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import type { City, Night, NightFormat } from "@/lib/types";
-import { formatLabel } from "@/lib/nights";
 import { NightCard } from "./NightCard";
 import { CalendarView } from "./CalendarView";
 
@@ -17,6 +16,27 @@ const filters: Array<{ value: FormatFilter; label: string }> = [
   { value: "games", label: "Game night" },
   { value: "brunch", label: "Brunch" },
 ];
+
+function ListIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg className={className} width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+      <path d="M5 4h9M5 8h9M5 12h9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="2.5" cy="4" r="1" fill="currentColor" />
+      <circle cx="2.5" cy="8" r="1" fill="currentColor" />
+      <circle cx="2.5" cy="12" r="1" fill="currentColor" />
+    </svg>
+  );
+}
+
+function CalendarIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg className={className} width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+      <rect x="2" y="3.5" width="12" height="10.5" rx="1.5" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M2 7h12" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M5.5 2v3M10.5 2v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 export function NightsExplorer({ nights }: { nights: Night[] }) {
   const [city, setCity] = useState<City | "all">("all");
@@ -60,22 +80,28 @@ export function NightsExplorer({ nights }: { nights: Night[] }) {
           <button
             type="button"
             onClick={() => setView("list")}
-            className={`cursor-pointer rounded-lg px-3 py-2 text-sm font-semibold transition ${
-              view === "list" ? "bg-void text-chalk" : "border border-line bg-chalk-hot text-void-soft hover:border-void/25"
-            }`}
             title="List view"
+            className={`inline-flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold transition ${
+              view === "list"
+                ? "bg-void text-chalk"
+                : "border border-line bg-chalk-hot text-void-soft hover:border-void/25"
+            }`}
           >
-            📋 List
+            <ListIcon />
+            List
           </button>
           <button
             type="button"
             onClick={() => setView("calendar")}
-            className={`cursor-pointer rounded-lg px-3 py-2 text-sm font-semibold transition ${
-              view === "calendar" ? "bg-void text-chalk" : "border border-line bg-chalk-hot text-void-soft hover:border-void/25"
-            }`}
             title="Calendar view"
+            className={`inline-flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold transition ${
+              view === "calendar"
+                ? "bg-void text-chalk"
+                : "border border-line bg-chalk-hot text-void-soft hover:border-void/25"
+            }`}
           >
-            📅 Calendar
+            <CalendarIcon />
+            Calendar
           </button>
         </div>
       </div>
@@ -108,7 +134,6 @@ export function NightsExplorer({ nights }: { nights: Night[] }) {
               <NightCard key={night.id} night={night} />
             ))}
           </div>
-
           {filtered.length === 0 && (
             <p className="py-16 text-center text-steel">
               No hangouts match these filters. Check back soon — or join the waitlist on a full night.

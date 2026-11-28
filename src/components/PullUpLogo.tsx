@@ -46,7 +46,7 @@ export function PullUpLogo({ variant = "full", inverted = false, className = "" 
       {mark}
       <span className="font-display text-[1.35rem] font-bold tracking-tight" style={{ color: ink }}>
         PullUp
-        <span style={{ color: accent }}>.ng</span>
+        <span style={{ color: accent }}>.NG</span>
       </span>
     </span>
   );

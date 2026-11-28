@@ -34,7 +34,7 @@ export function emailLayout(args: {
         <table role="presentation" width="560" cellspacing="0" cellpadding="0" style="max-width:560px;width:100%;">
           <tr>
             <td style="padding:0 4px 18px;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:700;letter-spacing:0.04em;color:#0b1c2c;">
-              PullUp<span style="color:#0d9488;">.ng</span>
+              PullUp<span style="color:#0d9488;">.NG</span>
             </td>
           </tr>
           <tr>

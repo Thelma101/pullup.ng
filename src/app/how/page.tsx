@@ -34,17 +34,6 @@ export default function HowPage() {
           ))}
         </ol>
 
-        <div className="mt-4 rounded-2xl border border-line bg-chalk-hot px-5 py-6">
-          <p className="font-display text-xl font-semibold text-void">Safety, short version</p>
-          <p className="mt-2 text-sm leading-relaxed text-steel">
-            Public venues. Small tables. Leave whenever.{" "}
-            <Link href="/safety" className="font-semibold text-clay underline underline-offset-2">
-              Safety notes
-            </Link>
-            .
-          </p>
-        </div>
-
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link href="/apply" className="btn-primary text-center">
             Create account
